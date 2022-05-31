@@ -6,9 +6,3 @@
   border-radius: 60px;
   object-fit: cover;
 }
-
-@media screen and (max-width: 567px) {
-  .profile__picture {
-    align-self: center;
-  }
-}
