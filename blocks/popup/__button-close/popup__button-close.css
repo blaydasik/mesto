@@ -5,6 +5,7 @@
   border: none;
   background-color: transparent;
   background-position: center;
+  background-size: contain;
   width: 32px;
   height: 32px;
   box-sizing: border-box;
@@ -20,7 +21,10 @@
 }
 
 @media screen and (max-width: 567px) {
-  ..popup__button-close { {
-
+  .popup__button-close {
+    grid-column: 2/3;
+    justify-self: end;
+    width: 20px;
+    height: 20px;
   }
 }
