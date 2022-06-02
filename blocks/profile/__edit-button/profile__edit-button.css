@@ -6,7 +6,7 @@
   background-color: transparent;
   width: 24px;
   height: 24px;
-  background-size: contain;
+  background-size: cover;
   box-sizing: border-box;
   cursor: pointer;
   background-repeat: no-repeat;
