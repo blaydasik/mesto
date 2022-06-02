@@ -12,7 +12,7 @@
 
 @media screen and (max-width: 567px) {
   .profile__info {
-    max-width: calc(100% -28px);
+    max-width: calc(100% - 28px);
     margin: 26px auto 36px;
     grid-template-columns: 1fr 16px;
     column-gap: 10px;
