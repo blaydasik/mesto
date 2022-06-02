@@ -43,13 +43,7 @@ function keyPressed(evt) {
     if(evt.code === 'Escape') {
         popupSwitch();
         document.removeEventListener('keydown',keyPressed);      
-    } else {
-        if(evt.code === 'Enter') {
-            popupSwitch();
-            saveResult()
-            document.removeEventListener('keydown',keyPressed);      
-        }
-    }
+    } 
 }
 
 // обработчик нажатия кнопок редактирования профиля и сохранить/закрыть
