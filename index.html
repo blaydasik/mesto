@@ -9,14 +9,14 @@
   <meta name="keywords" content="mesto, сервис размещения фотографий">
   <link rel="stylesheet" href="./pages/index.css">
   <link rel="shortcut icon" href="./images/logo/favicon.ico">
-  <title lang="en">Mesto</title>
+  <title>Место</title>
 </head>
 
 <body>
   <div class="page">
 
     <header class="header">
-      <div class="header__logo"></div>        
+      <a class="header__logo" href="#"></a>  
     </header>
 
     <main class="content">
@@ -25,7 +25,8 @@
         <img class="profile__picture" src="./images/profile-pic.jpg" alt="аватар пользователя.">
         <div class="profile__info">
           <h1 class="profile__name">Барон Мюнхгаузен</h1>
-          <button class="profile__edit-button" name='profile__edit-button' type="button"></button>
+          <button class="profile__edit-button" name='profile__edit-button' 
+            aria-label='edit-button' type="button"></button>
           <p class="profile__about">Искусный враль</p>
         </div>
         <button class="profile__add-button" name="profile__add-button" type="button"></button>
@@ -36,40 +37,46 @@
         <article class="card">
           <img class="card__image" src="./images/golden-retriever.jpg" alt="голден ретривер.">
           <h2 class="card__title">Голден ретривер</h2>
-          <button class="card__button-like" name="card__like-button" type="button"></button>
+          <button class="card__button-like" name="card__like-button" 
+            aria-label='button-like' type="button"></button>
         </article>
 
         <article class="card">
           <img class="card__image" src="./images/zvergschnaucer.jpg" alt="цвергшнауцер.">
           <h2 class="card__title">Цвергшнауцер</h2>
-          <button class="card__button-like" name="card__like-button" type="button"></button>
+          <button class="card__button-like" name="card__like-button" 
+            aria-label='button-like' type="button"></button>
         </article>
 
         <article class="card">
           <img class="card__image" src="./images/velsh-corgi-pembrok.jpg" 
             alt="вельш корги пемброк.">
           <h2 class="card__title">Вельш корги пемброк</h2>
-          <button class="card__button-like" name="card__like-button" type="button"></button>
+          <button class="card__button-like" name="card__like-button" 
+            aria-label='button-like' type="button"></button>
         </article>
 
         <article class="card">
           <img class="card__image" src="./images/labrador.jpg" alt="лабрадор.">
           <h2 class="card__title">Лабрадор</h2>
-          <button class="card__button-like" name="card__like-button" type="button"></button>
+          <button class="card__button-like" name="card__like-button" 
+            aria-label='button-like' type="button"></button>
         </article>
 
         <article class="card">
           <img class="card__image" src="./images/siberian-husky.jpg" 
             alt="сибирский хаски.">
           <h2 class="card__title">Сибирский хаски</h2>
-          <button class="card__button-like" name="card__like-button" type="button"></button>
+          <button class="card__button-like" name="card__like-button" 
+            aria-label='button-like' type="button"></button>
         </article>
 
         <article class="card">
           <img class="card__image" src="./images/big-company.jpg" 
             alt="разные породы собак сидят около стены.">
           <h2 class="card__title">Большая компания</h2>
-          <button class="card__button-like" name="card__like-button" type="button"></button>
+          <button class="card__button-like" name="card__like-button" 
+            aria-label='button-like' type="button"></button>
         </article>
       
       </section> 
@@ -80,15 +87,18 @@
       <p class="footer__copyright">&copy; 2022 Алексей Куров</p>  
     </footer>
     
-    <div class="popup">
-      <button class="popup__button-close" name="popup__button-close" type="button"></button>
+    <div class="popup">      
       <div class="popup__container">
+        <button class="popup__button-close" name="popup__button-close" 
+          aria-label='button-close' type="button"></button>
         <form class="popup__form" name="popup__form">
           <h2 class="popup__title">Редактировать профиль</h2>
-          <input class="popup__input popup__input_type_name" placeholder="Имя" type="text">
-          <input class="popup__input popup__input_type_about" placeholder="О себе" type="text">
-          <button class="popup__button-save" name="popup__button-save" type="submit">
-            Сохранить</button>
+          <input class="popup__input popup__input_type_name" name="popup__input_type_name"
+          placeholder="Имя" type="text">
+          <input class="popup__input popup__input_type_about" name="popup__input_type_about"
+          placeholder="О себе" type="text">
+          <button class="popup__button-save" name="popup__button-save" 
+            type="submit">Сохранить</button>
         </form>
       </div>
     </div>

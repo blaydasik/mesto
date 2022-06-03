@@ -11,6 +11,7 @@
   box-sizing: border-box;
   cursor: pointer;
   background-repeat: no-repeat;
+  background-size: сover;
   transition: opacity .5s ease;
 }
 

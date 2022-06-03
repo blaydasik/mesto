@@ -1,6 +1,6 @@
 .profile {
   margin: 0 auto;
-  padding: 40px 0 50px;
+  padding: 40px 0 35px;
   max-width: 880px;
   display: grid;
   grid-template-columns: 120px 1fr 150px;
@@ -8,13 +8,13 @@
 
 @media screen and (max-width: 1279px) {
   .profile {
-    max-width: calc(100% - 400px);
+    width: calc(100% - 200px);
   }
 }
 
 @media screen and (max-width: 1023px) {
   .profile {
-    max-width: calc(100% - 200px);
+    max-width: calc(100% - 100px);
   }
 }
 @media screen and (max-width: 836px) {
@@ -28,7 +28,6 @@
   .profile {
     max-width: 568px;
     padding-top: 42px;
-    padding-bottom: 36px;
   }
 }
 

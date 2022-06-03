@@ -6,13 +6,6 @@
   height: 100%;
   background-color: rgba(0, 0, 0, .5);
   display: none;
-  grid-template-columns: 1fr min-content 1fr;
-  grid-template-rows: 1fr min-content 1fr;
-  grid-gap: 8px;
-}
-
-@media screen and (max-width: 567px) {
-  .popup {
-    grid-gap: 16px;
-  }
+  align-content: center;
+  justify-content: center;
 }

@@ -1,5 +1,5 @@
 .profile__info {
-  margin: 22px 0 25px 30px;
+  margin: 16px 0 18px 30px;
   padding: 0;
   color: #ffffff;
   max-width: 336px;
@@ -16,6 +16,6 @@
     margin: 26px auto 36px;
     grid-template-columns: 1fr 16px;
     column-gap: 10px;
-    row-gap: 14px;
+    row-gap: 4px;
   }
 }

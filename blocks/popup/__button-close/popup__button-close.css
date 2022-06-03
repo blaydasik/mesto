@@ -12,19 +12,32 @@
   cursor: pointer;
   background-repeat: no-repeat;
   transition: opacity .5s ease;
-  grid-column: 3/4;
-  align-self: end;
+  position: absolute;
+  top: -40px;
+  left: 438px;
 }
 
 .popup__button-close:hover {
   opacity: .6;
 }
 
+@media screen and (max-width: 1023px) {
+  .popup__button-close {
+    left: 352px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .popup__button-close {
+    left: 290px;
+  }
+}
+
 @media screen and (max-width: 567px) {
   .popup__button-close {
-    grid-column: 2/3;
-    justify-self: end;
     width: 20px;
     height: 20px;
+    top: -36px;
+    left: 262px;
   }
 }
