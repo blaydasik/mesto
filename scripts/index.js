@@ -1,15 +1,15 @@
 //находим кнопки в DOM
-let buttonEdit = document.querySelector('.profile__edit-button');
-let buttonClose = document.querySelector('.popup__button-close');
+const buttonEdit = document.querySelector('.profile__edit-button');
+const buttonClose = document.querySelector('.popup__button-close');
 
 //находим popup в DOM
-let popup = document.querySelector('.popup');
+const popup = document.querySelector('.popup');
 
 // Находим форму в DOM
-let formElement = document.querySelector('.popup__form');
+const formElement = document.querySelector('.popup__form');
 // Находим поля формы в DOM
-let nameInput = formElement.querySelector('.popup__input_type_name');
-let jobInput = formElement.querySelector('.popup__input_type_about');
+const nameInput = formElement.querySelector('.popup__input_type_name');
+const jobInput = formElement.querySelector('.popup__input_type_about');
 
 //находим поля в профиле
 let nameProfile = document.querySelector('.profile__name');
