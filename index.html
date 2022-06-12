@@ -32,54 +32,7 @@
         <button class="profile__add-button" name="profile__add-button" type="button"></button>
       </section>   
 
-      <section class="cards">
-
-        <article class="card">
-          <img class="card__image" src="./images/golden-retriever.jpg" alt="голден ретривер.">
-          <h2 class="card__title">Голден ретривер</h2>
-          <button class="card__button-like" name="card__like-button" 
-            aria-label='button-like' type="button"></button>
-        </article>
-
-        <article class="card">
-          <img class="card__image" src="./images/zvergschnaucer.jpg" alt="цвергшнауцер.">
-          <h2 class="card__title">Цвергшнауцер</h2>
-          <button class="card__button-like" name="card__like-button" 
-            aria-label='button-like' type="button"></button>
-        </article>
-
-        <article class="card">
-          <img class="card__image" src="./images/velsh-corgi-pembrok.jpg" 
-            alt="вельш корги пемброк.">
-          <h2 class="card__title">Вельш корги пемброк</h2>
-          <button class="card__button-like" name="card__like-button" 
-            aria-label='button-like' type="button"></button>
-        </article>
-
-        <article class="card">
-          <img class="card__image" src="./images/labrador.jpg" alt="лабрадор.">
-          <h2 class="card__title">Лабрадор</h2>
-          <button class="card__button-like" name="card__like-button" 
-            aria-label='button-like' type="button"></button>
-        </article>
-
-        <article class="card">
-          <img class="card__image" src="./images/siberian-husky.jpg" 
-            alt="сибирский хаски.">
-          <h2 class="card__title">Сибирский хаски</h2>
-          <button class="card__button-like" name="card__like-button" 
-            aria-label='button-like' type="button"></button>
-        </article>
-
-        <article class="card">
-          <img class="card__image" src="./images/big-company.jpg" 
-            alt="разные породы собак сидят около стены.">
-          <h2 class="card__title">Большая компания</h2>
-          <button class="card__button-like" name="card__like-button" 
-            aria-label='button-like' type="button"></button>
-        </article>
-      
-      </section> 
+      <section class="cards"></section> 
 
     </main>
 
@@ -87,6 +40,15 @@
       <p class="footer__copyright">&copy; 2022 Алексей Куров</p>  
     </footer>
     
+    <template class="card_template">
+      <article class="card">
+        <img class="card__image">
+        <h2 class="card__title"></h2>
+        <button class="card__button-like" name="card__like-button" 
+          aria-label='button-like' type="button"></button>
+      </article>
+    </template>
+
     <div class="popup">      
       <div class="popup__container">
         <button class="popup__button-close" name="popup__button-close" 
