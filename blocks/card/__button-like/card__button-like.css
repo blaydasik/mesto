@@ -10,7 +10,7 @@
   box-sizing: border-box;
   cursor: pointer;
   background-repeat: no-repeat;
-  transition: opacity background-image .5s ease;
+  transition: opacity .5s ease;
 }
 
 .card__button-like:hover {
