@@ -1,0 +1,6 @@
+.popup__container_type_picture-view {
+  max-width: 75vw;
+  max-height: 75vh;
+  border-radius: 0px;
+  position: relative;
+}

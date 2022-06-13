@@ -46,6 +46,8 @@
         <h2 class="card__title"></h2>
         <button class="card__button-like" name="card__like-button" 
           aria-label='button-like' type="button"></button>
+        <button class="card__button-delete" name="card__like-button-delete" 
+          aria-label='button-delete' type="button"></button>
       </article>
     </template>
 
@@ -79,6 +81,18 @@
             type="submit">Создать</button>
         </form>
       </div>
+    </div>
+
+    <div class="popup popup_type_picture-view">
+      <div class="popup__container popup__container_type_picture-view">
+        <figure>
+          <button class="popup__button-close" name="popup__button-close" 
+            aria-label='button-close' type="button"></button>
+          <img class="popup__image" src="./images/labrador.jpg">
+          <figcaption class="popup__image-title">Заголовок</figcaption>
+        </figure>
+      </div>
+    </div>
 
   </div>
 

@@ -12,6 +12,7 @@ const buttonAdd = document.querySelector('.profile__add-button');
 //находим popupы в DOM
 const popupProfile = document.querySelector('.popup_type_profile');
 const popupAddCard = document.querySelector('.popup_type_add-card');
+const popupPictureView = document.querySelector('.popup_type_picture-view');
 
 // Находим формы в DOM
 const formProfile = document.querySelector('.popup__form_type_profile');
@@ -34,8 +35,14 @@ function addCard(cardToAdd) {
     const buttonLike = newCard.querySelector('.card__button-like');
     buttonLike.addEventListener('click', cardLike);
     //навесим обработчик на удаление карточки
-
-
+    const buttonDelete = newCard.querySelector('.card__button-delete');
+    buttonDelete.addEventListener('click', cardDelete);
+    //навесим обработчик по клику на картинку
+    const clickOnImage = newCard.querySelector('.card__image');
+    clickOnImage.addEventListener('click', function() {
+        popupSwitch(popupPictureView);
+    });
+    //зададим необходимые свойства карточке
     newCard.querySelector('.card__title').textContent=cardToAdd.title;
     newImg.src=cardToAdd.img;
     newImg.alt=cardToAdd.title;
@@ -45,8 +52,15 @@ function addCard(cardToAdd) {
 //функция, реализующая like/dislike
 function cardLike(evt) {
     //определим лайкнутую карточку
-    const currentCard = evt.target;
-    currentCard.classList.toggle('card__button-like_active');
+    const currentButton = evt.target;
+    currentButton.classList.toggle('card__button-like_active');
+}
+
+//функция, удаляющая карточку
+function cardDelete(evt) {
+    //определим лайкнутую карточку
+    const currentCard = evt.target.parentNode;
+    currentCard.remove();
 }
 
 //функция открывающая/закрывающая popup
