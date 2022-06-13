@@ -6,64 +6,101 @@ const cards = document.querySelector('.cards');
 
 //находим кнопки в DOM
 const buttonEdit = document.querySelector('.profile__edit-button');
-const buttonClose = document.querySelector('.popup__button-close');
+const buttonClose = document.querySelectorAll('.popup__button-close');
+const buttonAdd = document.querySelector('.profile__add-button');
 
-//находим popup в DOM
-const popup = document.querySelector('.popup');
+//находим popupы в DOM
+const popupProfile = document.querySelector('.popup_type_profile');
+const popupAddCard = document.querySelector('.popup_type_add-card');
 
-// Находим форму в DOM
-const formElement = document.querySelector('.popup__form');
-// Находим поля формы в DOM
-const nameInput = formElement.querySelector('.popup__input_type_name');
-const jobInput = formElement.querySelector('.popup__input_type_about');
+// Находим формы в DOM
+const formProfile = document.querySelector('.popup__form_type_profile');
+const formAddCard = document.querySelector('.popup__form_type_add-card');
+// Находим поля форм в DOM
+const nameInput = formProfile.querySelector('.popup__input_type_name');
+const jobInput = formProfile.querySelector('.popup__input_type_about');
+const titleInput = formAddCard.querySelector('.popup__input_type_title');
+const linkInput = formAddCard.querySelector('.popup__input_type_link');
 
-//находим поля в профиле
-let nameProfile = document.querySelector('.profile__name');
-let aboutProfile = document.querySelector('.profile__about');
+//находим поля для вставки значений в профиле
+const nameProfile = document.querySelector('.profile__name');
+const aboutProfile = document.querySelector('.profile__about');
 
 //функция, добавляющая карточку на страницу
 function addCard(cardToAdd) {
     const newCard = cardTemplate.querySelector('.card').cloneNode(true);
     const newImg = newCard.querySelector('.card__image');
+    //навесим обрабочик на like 
+    const buttonLike = newCard.querySelector('.card__button-like');
+    buttonLike.addEventListener('click', cardLike);
+    //навесим обработчик на удаление карточки
+
+
     newCard.querySelector('.card__title').textContent=cardToAdd.title;
     newImg.src=cardToAdd.img;
     newImg.alt=cardToAdd.title;
-    cards.appendChild(newCard);
+    cards.prepend(newCard);
+}
+
+//функция, реализующая like/dislike
+function cardLike(evt) {
+    //определим лайкнутую карточку
+    const currentCard = evt.target;
+    currentCard.classList.toggle('card__button-like_active');
 }
 
 //функция открывающая/закрывающая popup
-function popupSwitch() {
+function popupSwitch(popup) {
     popup.classList.toggle('popup_opened');
 }
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
 function formSubmitHandler(evt) {
+    //определим, в каком popup возникло событие submit 
+    const popupCurrent = evt.target.parentNode.parentNode;
     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
     // Так мы можем определить свою логику отправки.
     // О том, как это делать, расскажем позже.
-    nameProfile.textContent = nameInput.value;
-    aboutProfile.textContent = jobInput.value;
-    popupSwitch();
-}
-
-// обработчик нажатия кнопок редактирования профиля и сохранить/закрыть
-function profileEdit() {
-    popupSwitch();
-    //если popup открылся   
-    if (popup.classList.contains('popup_opened')) {
-        nameInput.value = nameProfile.textContent;
-        jobInput.value = aboutProfile.textContent;
+    if(popupCurrent.classList.contains('popup_type_profile')) {
+        nameProfile.textContent = nameInput.value;
+        aboutProfile.textContent = jobInput.value;
+    } else if(popupCurrent.classList.contains('popup_type_add-card')) {
+        const cardToAdd={
+            title: titleInput.value,
+            img: linkInput.value
+        }
+        addCard(cardToAdd);    
     }
+    popupSwitch(popupCurrent);
 }
 
-// Прикрепляем обработчик к форме:
-// он будет следить за событием “submit” - «отправка»
-formElement.addEventListener('submit', formSubmitHandler);
+// обработчик нажатия кнопки редактирования профиля
+function profileEdit(popup) {
+    popupSwitch(popup);
+    nameInput.value = nameProfile.textContent;
+    jobInput.value = aboutProfile.textContent;
+}
+
+// Прикрепляем обработчики к формам:
+// они будут следить за событием “submit” - «отправка»
+formProfile.addEventListener('submit', formSubmitHandler);
+formAddCard.addEventListener('submit', formSubmitHandler);
 
 //прикрепляем обработчики к кнопкам
-buttonEdit.addEventListener('click', profileEdit);
-buttonClose.addEventListener('click', profileEdit);
+buttonEdit.addEventListener('click', function() {
+    profileEdit(popupProfile);
+});
+buttonClose.forEach(function(item) {
+    item.addEventListener('click', function(evt) {
+        //определим, какой popup должен закрыться
+        const popupCurrent = evt.target.parentNode.parentNode;
+        popupSwitch(popupCurrent);
+    });
+});
+buttonAdd.addEventListener('click', function() {
+    popupSwitch(popupAddCard);
+});
 
 //массив с карточками при загрузке страницы
 const initialCards = [
