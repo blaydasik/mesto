@@ -27,6 +27,10 @@ const linkInput = formAddCard.querySelector('.popup__input_type_link');
 const nameProfile = document.querySelector('.profile__name');
 const aboutProfile = document.querySelector('.profile__about');
 
+//находим поля для вставки значений в popup
+const popupImageTitle = popupPictureView.querySelector('.popup__image-title');
+const popupImage = popupPictureView.querySelector('.popup__image');
+
 //функция, добавляющая карточку на страницу
 function addCard(cardToAdd) {
     const newCard = cardTemplate.querySelector('.card').cloneNode(true);
@@ -39,9 +43,7 @@ function addCard(cardToAdd) {
     buttonDelete.addEventListener('click', cardDelete);
     //навесим обработчик по клику на картинку
     const clickOnImage = newCard.querySelector('.card__image');
-    clickOnImage.addEventListener('click', function() {
-        popupSwitch(popupPictureView);
-    });
+    clickOnImage.addEventListener('click', imageView);
     //зададим необходимые свойства карточке
     newCard.querySelector('.card__title').textContent=cardToAdd.title;
     newImg.src=cardToAdd.img;
@@ -61,6 +63,16 @@ function cardDelete(evt) {
     //определим лайкнутую карточку
     const currentCard = evt.target.parentNode;
     currentCard.remove();
+}
+
+//функция, открывающая картинку для просмотра
+function imageView(evt) {
+    //определим карточку, где произошел клик на картинку
+    currentCard = evt.target.parentNode;
+    popupImageTitle.textContent = currentCard.querySelector('.card__title').textContent;
+    popupImage.src = currentCard.querySelector('.card__image').src;
+    popupImage.alt = currentCard.querySelector('.card__image').alt;
+    popupSwitch(popupPictureView);   
 }
 
 //функция открывающая/закрывающая popup
