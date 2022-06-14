@@ -45,20 +45,19 @@ function createCard(cardData) {
         newCard.remove();
     });
     //навесим обработчик по клику на картинку
-    newImg.addEventListener('click', () => viewImage(newCard));
+    newImg.addEventListener('click', () => viewImage(cardData));
     //зададим необходимые свойства карточке
     newCard.querySelector('.card__title').textContent=cardData.title;
     newImg.src=cardData.img;
     newImg.alt=cardData.title; 
-    return(newCard);   
+    return newCard;   
 }
 
 //функция, открывающая картинку для просмотра
 function viewImage(currentCard) {
-    const currentCardImg = currentCard.querySelector('.card__image');
-    popupImageTitle.textContent = currentCard.querySelector('.card__title').textContent;
-    popupImage.src = currentCardImg.src;
-    popupImage.alt = currentCardImg.alt;
+    popupImageTitle.textContent = currentCard.title;
+    popupImage.src = currentCard.img;
+    popupImage.alt = currentCard.title;
     openPopup(popupPictureView);   
 }
 
@@ -73,7 +72,7 @@ function closePopup(popup) {
 }
 
 //обработчик отправки формы редактирования профиля
-function submitFormEditProfile(evt) {
+function handleSubmitEditProfile(evt) {
     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
     // Так мы можем определить свою логику отправки.
     // О том, как это делать, расскажем позже.
@@ -83,7 +82,7 @@ function submitFormEditProfile(evt) {
 }
 
 //обработчик отправки формы добавления карточки
-function submitFormAddCard(evt) {
+function handleSubmitAddCard(evt) {
     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
     // Так мы можем определить свою логику отправки.
     // О том, как это делать, расскажем позже.
@@ -98,7 +97,7 @@ function submitFormAddCard(evt) {
 }
 
 // обработчик нажатия кнопки редактирования профиля
-function editProfile(popup) {    
+function openEditProfilePopup(popup) {    
     nameInput.value = nameProfile.textContent;
     jobInput.value = aboutProfile.textContent;
     openPopup(popup);
@@ -106,12 +105,12 @@ function editProfile(popup) {
 
 // Прикрепляем обработчики к формам:
 // они будут следить за событием “submit” - «отправка»
-formProfile.addEventListener('submit', submitFormEditProfile);
-formAddCard.addEventListener('submit', submitFormAddCard);
+formProfile.addEventListener('submit', handleSubmitEditProfile);
+formAddCard.addEventListener('submit', handleSubmitAddCard);
 
 //прикрепляем обработчики к кнопкам
 buttonEdit.addEventListener('click', function() {
-    editProfile(popupProfile);
+    openEditProfilePopup(popupProfile);
 });
 buttonCloseList.forEach(function(item) {
     item.addEventListener('click', function(evt) {
@@ -125,9 +124,6 @@ buttonAdd.addEventListener('click', function() {
 });
 
 //добавляем инициализированные карточки
-for( let i=0; i<6; i++) {
-    
-}
 initialCards.forEach( (item) => {
     const card = createCard(item);
     cards.prepend(card);
