@@ -30,7 +30,7 @@ const aboutProfile = document.querySelector('.profile__about');
 const popupImageTitle = popupPictureView.querySelector('.popup__image-title');
 const popupImage = popupPictureView.querySelector('.popup__image');
 
-//функция, добавляющая карточку на страницу
+//функция, создающая карточку
 function createCard(cardData) {  
     const newCard = card.cloneNode(true);  
     const newImg = newCard.querySelector('.card__image');
@@ -124,10 +124,6 @@ buttonAdd.addEventListener('click', function() {
     openPopup(popupAddCard);
 });
 
-//добавляем инициализированные карточки
-for( let i=0; i<6; i++) {
-    
-}
 initialCards.forEach( (item) => {
     const card = createCard(item);
     cards.prepend(card);
