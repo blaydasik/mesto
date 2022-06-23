@@ -89,30 +89,34 @@ function closePopup(popup) {
 }
 
 //обработчик отправки формы редактирования профиля
-function handleSubmitEditProfile() {
-    nameProfile.textContent = nameInput.value;
-    aboutProfile.textContent = jobInput.value;
-    closePopup(popupProfile);
+function handleSubmitEditProfile(evt) {
+    //предотвратим submit при нажатии enter для невалидной формы
+    if (!evt.submitter.classList.contains(settings.inactiveButtonClass)) {
+        nameProfile.textContent = nameInput.value;
+        aboutProfile.textContent = jobInput.value;
+        //отключим валидацию
+        settings.formSelector = '.popup__form_type_profile';
+        disableValidation(settings);
+        closePopup(popupProfile);
+    }
 }
 
 //обработчик отправки формы добавления карточки
 function handleSubmitAddCard(evt) {
-    const cardData = {
-        title: titleInput.value,
-        img: linkInput.value
+    //предотвратим submit при нажатии enter для невалидной формы
+    if (!evt.submitter.classList.contains(settings.inactiveButtonClass)) {
+        const cardData = {
+            title: titleInput.value,
+            img: linkInput.value
+        }
+        const card = createCard(cardData);
+        cards.prepend(card);
+        evt.target.reset();
+        closePopup(popupAddCard);
+        //отключим валидацию
+        settings.formSelector = '.popup__form_type_add-card';
+        disableValidation(settings);
     }
-    const card = createCard(cardData);
-    cards.prepend(card);
-    evt.target.reset();
-    closePopup(popupAddCard);
-}
-
-// обработчик нажатия кнопки редактирования профиля
-function openEditProfilePopup(popup) {
-    nameInput.value = nameProfile.textContent;
-    jobInput.value = aboutProfile.textContent;
-    enableValidation(settings);
-    openPopup(popup);
 }
 
 // Прикрепляем обработчики к формам:
@@ -124,24 +128,47 @@ formAddCard.addEventListener('submit', handleSubmitAddCard);
 buttonEdit.addEventListener('click', function () {
     openEditProfilePopup(popupProfile);
 });
-buttonAdd.addEventListener('click', function () {
-    openPopup(popupAddCard);
+
+// обработчик нажатия кнопки редактирования профиля
+function openEditProfilePopup(popup) {
+    nameInput.value = nameProfile.textContent;
+    jobInput.value = aboutProfile.textContent;
+    settings.formSelector = '.popup__form_type_profile';
     enableValidation(settings);
+    openPopup(popup);
+}
+
+//обработчик нажатия кнопки добавления карточки
+buttonAdd.addEventListener('click', function (evt) {
+    settings.formSelector = '.popup__form_type_add-card';
+    enableValidation(settings);
+    openPopup(popupAddCard);
 });
 
+//обработчик нажатий кнопок закрыть
 buttonCloseList.forEach(function (item) {
     item.addEventListener('click', function (evt) {
         //определим, какой popup должен закрыться        
         const popupCurrent = evt.target.closest('.popup');
+        //если это не popup картинки
+        if (!popupCurrent.classList.contains('popup_type_picture-view')) {
+            //найдем форму
+            const formCurrent = popupCurrent.querySelector(settings.formSelector);
+            //очистим поля формы для формы добавления картинок
+            if (formCurrent.classList.contains('popup__form_type_add-card')) formCurrent.reset();
+            //отключим валидацию
+            settings.formSelector = '.' + formCurrent.classList[1];
+            disableValidation(settings);
+        };
         closePopup(popupCurrent);
     });
 });
+
+//обработчик нажатия на overlay
+
 
 //добавляем инициализированные карточки
 initialCards.forEach((item) => {
     const card = createCard(item);
     cards.prepend(card);
 });
-
-//функция, активизирующая валидацию с заданными параметрами
-enableValidation(settings); 
