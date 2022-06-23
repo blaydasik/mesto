@@ -1,3 +1,20 @@
+//параметры валидации:
+//formSelector - общий класс для валидируемых форм
+//inputSelector - общий класс для валидируемых inputs
+//submitButtonSelector - общий класс для кнопок submit
+//inactiveButtonClass - модификатор для неактивного состояния кнопки submit
+//inputErrorClass - модификатор для невалидного состояния iтput
+//errorClass - модификатор для активного состояния ошибки
+const settings = {
+    formSelector: '.popup__form',
+    fieldsetSelector: '.popup__fieldset',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button-save',
+    inactiveButtonClass: 'popup__button-save_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+};
+
 //находим template и его элементы в DOM
 const cardTemplate = document.querySelector('.card-template').content;
 const card = cardTemplate.querySelector('.card');
@@ -31,8 +48,8 @@ const popupImageTitle = popupPictureView.querySelector('.popup__image-title');
 const popupImage = popupPictureView.querySelector('.popup__image');
 
 //функция, создающая карточку
-function createCard(cardData) {  
-    const newCard = card.cloneNode(true);  
+function createCard(cardData) {
+    const newCard = card.cloneNode(true);
     const newImg = newCard.querySelector('.card__image');
     //навесим обрабочик на like 
     const buttonLike = newCard.querySelector('.card__button-like');
@@ -47,10 +64,10 @@ function createCard(cardData) {
     //навесим обработчик по клику на картинку
     newImg.addEventListener('click', () => viewImage(cardData));
     //зададим необходимые свойства карточке
-    newCard.querySelector('.card__title').textContent=cardData.title;
-    newImg.src=cardData.img;
-    newImg.alt=cardData.title; 
-    return newCard;   
+    newCard.querySelector('.card__title').textContent = cardData.title;
+    newImg.src = cardData.img;
+    newImg.alt = cardData.title;
+    return newCard;
 }
 
 //функция, открывающая картинку для просмотра
@@ -58,7 +75,7 @@ function viewImage(currentCard) {
     popupImageTitle.textContent = currentCard.title;
     popupImage.src = currentCard.img;
     popupImage.alt = currentCard.title;
-    openPopup(popupPictureView);   
+    openPopup(popupPictureView);
 }
 
 //функция открывающая popup
@@ -80,20 +97,21 @@ function handleSubmitEditProfile() {
 
 //обработчик отправки формы добавления карточки
 function handleSubmitAddCard(evt) {
-    const cardData={
+    const cardData = {
         title: titleInput.value,
         img: linkInput.value
     }
     const card = createCard(cardData);
-    cards.prepend(card); 
+    cards.prepend(card);
     evt.target.reset();
     closePopup(popupAddCard);
 }
 
 // обработчик нажатия кнопки редактирования профиля
-function openEditProfilePopup(popup) {    
+function openEditProfilePopup(popup) {
     nameInput.value = nameProfile.textContent;
     jobInput.value = aboutProfile.textContent;
+    enableValidation(settings);
     openPopup(popup);
 }
 
@@ -103,15 +121,16 @@ formProfile.addEventListener('submit', handleSubmitEditProfile);
 formAddCard.addEventListener('submit', handleSubmitAddCard);
 
 //прикрепляем обработчики к кнопкам
-buttonEdit.addEventListener('click', function() {
+buttonEdit.addEventListener('click', function () {
     openEditProfilePopup(popupProfile);
 });
-buttonAdd.addEventListener('click', function() {
+buttonAdd.addEventListener('click', function () {
     openPopup(popupAddCard);
+    enableValidation(settings);
 });
 
-buttonCloseList.forEach(function(item) {
-    item.addEventListener('click', function(evt) {
+buttonCloseList.forEach(function (item) {
+    item.addEventListener('click', function (evt) {
         //определим, какой popup должен закрыться        
         const popupCurrent = evt.target.closest('.popup');
         closePopup(popupCurrent);
@@ -119,24 +138,10 @@ buttonCloseList.forEach(function(item) {
 });
 
 //добавляем инициализированные карточки
-initialCards.forEach( (item) => {
+initialCards.forEach((item) => {
     const card = createCard(item);
     cards.prepend(card);
 });
 
-//функция, активизирующая валидацию с заданными параметрами:
-//formSelector - общий класс для валидируемых форм
-//inputSelector - общий класс для валидируемых inputs
-//submitButtonSelector - общий класс для кнопок submit
-//inactiveButtonClass - модификатор для неактивного состояния кнопки submit
-//inputErrorClass - модификатор для невалидного состояния iтput
-//errorClass - модификатор для активного состояния ошибки
-enableValidation({
-    formSelector: '.popup__form',
-    fieldsetSelector: '.popup__fieldset',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button-save',
-    inactiveButtonClass: 'popup__button-save_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-  }); 
+//функция, активизирующая валидацию с заданными параметрами
+enableValidation(settings); 

@@ -1,6 +1,3 @@
-
-
-
 /*
 const showInputError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
@@ -16,48 +13,44 @@ const hideInputError = (formElement, inputElement) => {
   errorElement.textContent = '';
 };
 
-const checkInputValidity = (formElement, inputElement) => {
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
-  } else {
-    hideInputError(formElement, inputElement);
-  }
-};
+*/
 
-const setEventListeners = (formElement) => {
-  const inputList = Array.from(formElement.querySelectorAll('.form__input'));
-  const buttonElement = formElement.querySelector('.form__submit');
-  toggleButtonState(inputList,buttonElement); 
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', function () {
-      checkInputValidity(formElement, inputElement);
-      toggleButtonState(inputList,buttonElement);
-    });
-  });
-};
-
-
-
-const hasInvalidInput = (inputList) => {
-  return inputList.some( (inputElement) => {
-    return !inputElement.validity.valid;
-  });
+//функция, отображающая сообщение об ошибки
+function showErrorMessage(fieldset, inputsItem) {
+  //определим span для выведения ошибки
+  const errorItem = fieldset.querySelector(`.${inputsItem.id}-error`);
+  //подсветим input с ошибкой
+  inputsItem.classList.add(settings.inputErrorClass);
+  //запишем текст ошибки в span
+  errorItem.textContent = inputsItem.validationMessage;
+  //отобразим span с ошибкой
+  errorItem.classList.add(settings.errorClass);
 }
 
-const toggleButtonState = (inputList, buttonElement) => {
-  if(hasInvalidInput(inputList)) {
-    buttonElement.classList.add('button_inactive');
+//функция, отображающая или скрывающая сообщение об ошибке на основании 
+//валидности input 
+function validateInput(fieldset,inputsItem) {
+  if(inputsItem.validity.valid) {
+    hideErrorMessage(fieldset, inputsItem);    
   } else {
-    buttonElement.classList.remove('button_inactive');
+    showErrorMessage(fieldset, inputsItem);    
   }
-}*/
+}
 
 //функция, проверяющая набор inputs на валидность
 function checkInput(inputs) {
   //проверим, есть ли хотя бы один невалидный input
-  //если true, то нашелся хотя бы один невалидный input 
-  return inputs.some( (inputsItem) => {
-    //вызывается пока не вернется true, а мы ищем хотя бы один невалидный
+  //если true, то нашелся хотя бы один невалидный input
+console.log(inputs);
+
+inputs.forEach( (item) => { 
+  console.log(item);
+  console.log(item.validity);
+
+});
+  return !inputs.some( (inputsItem) => {
+    //вызывается пока не вернется true, а мы ищем хотя бы один невалидный 
+console.log('checkInput '+inputsItem+' is '+inputsItem.validity.valid)   
     return !inputsItem.validity.valid;
   });
 }
@@ -75,13 +68,12 @@ function toggleButtonState(inputs, submitButton) {
 //функция, устанавливающая обработчик на набор полей
 function setEventListener(fieldset) {
   //найдем все inputs в наборе полей
-console.log(settings);
   const inputs = Array.from(fieldset.querySelectorAll(settings.inputSelector));
   //найдем кнопку submit
   const submitButton = fieldset.querySelector(settings.submitButtonSelector);
   //при инициализации проведем валидацию и на ее основании определим состояние кнопки submit
-console.log('initialize button check');
   toggleButtonState(inputs,submitButton);
+console.log('toggled');
   //навесим обработчики на ввод в inputs
   inputs.forEach((inputsItem) => {
     inputsItem.addEventListener('input', () => {
@@ -89,6 +81,7 @@ console.log('initialize button check');
       validateInput(fieldset,inputsItem);
       //определим состояние кнопки по результатам валидации
       toggleButtonState(inputs,submitButton);
+console.log('toggled');
     });
   });
 }
