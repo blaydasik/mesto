@@ -8,15 +8,15 @@ const buttonEdit = document.querySelector('.profile__edit-button');
 const buttonCloseList = document.querySelectorAll('.popup__button-close');
 const buttonAdd = document.querySelector('.profile__add-button');
 
-//находим popupы в DOM
+//находим popups в DOM
 const popupProfile = document.querySelector('.popup_type_profile');
 const popupAddCard = document.querySelector('.popup_type_add-card');
 const popupPictureView = document.querySelector('.popup_type_picture-view');
 
-// Находим формы в DOM
+//Находим формы в DOM
 const formProfile = document.querySelector('.popup__form_type_profile');
 const formAddCard = document.querySelector('.popup__form_type_add-card');
-// Находим поля форм в DOM
+//находим поля форм в DOM
 const nameInput = formProfile.querySelector('.popup__input_type_name');
 const jobInput = formProfile.querySelector('.popup__input_type_about');
 const titleInput = formAddCard.querySelector('.popup__input_type_title');
@@ -72,10 +72,7 @@ function closePopup(popup) {
 }
 
 //обработчик отправки формы редактирования профиля
-function handleSubmitEditProfile(evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-    // Так мы можем определить свою логику отправки.
-    // О том, как это делать, расскажем позже.
+function handleSubmitEditProfile() {
     nameProfile.textContent = nameInput.value;
     aboutProfile.textContent = jobInput.value;
     closePopup(popupProfile);
@@ -83,9 +80,6 @@ function handleSubmitEditProfile(evt) {
 
 //обработчик отправки формы добавления карточки
 function handleSubmitAddCard(evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-    // Так мы можем определить свою логику отправки.
-    // О том, как это делать, расскажем позже.
     const cardData={
         title: titleInput.value,
         img: linkInput.value
@@ -112,15 +106,16 @@ formAddCard.addEventListener('submit', handleSubmitAddCard);
 buttonEdit.addEventListener('click', function() {
     openEditProfilePopup(popupProfile);
 });
+buttonAdd.addEventListener('click', function() {
+    openPopup(popupAddCard);
+});
+
 buttonCloseList.forEach(function(item) {
     item.addEventListener('click', function(evt) {
         //определим, какой popup должен закрыться        
         const popupCurrent = evt.target.closest('.popup');
         closePopup(popupCurrent);
     });
-});
-buttonAdd.addEventListener('click', function() {
-    openPopup(popupAddCard);
 });
 
 //добавляем инициализированные карточки
@@ -129,8 +124,16 @@ initialCards.forEach( (item) => {
     cards.prepend(card);
 });
 
+//функция, активизирующая валидацию с заданными параметрами:
+//formSelector - общий класс для валидируемых форм
+//inputSelector - общий класс для валидируемых inputs
+//submitButtonSelector - общий класс для кнопок submit
+//inactiveButtonClass - модификатор для неактивного состояния кнопки submit
+//inputErrorClass - модификатор для невалидного состояния iтput
+//errorClass - модификатор для активного состояния ошибки
 enableValidation({
     formSelector: '.popup__form',
+    fieldsetSelector: '.popup__fieldset',
     inputSelector: '.popup__input',
     submitButtonSelector: '.popup__button-save',
     inactiveButtonClass: 'popup__button-save_disabled',

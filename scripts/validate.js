@@ -1,3 +1,7 @@
+
+
+
+/*
 const showInputError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add('form__input_type_error');
@@ -32,18 +36,7 @@ const setEventListeners = (formElement) => {
   });
 };
 
-const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll('.form'));
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', function (evt) {
-      evt.preventDefault();
-    });
-    const fieldsetList = Array.from(formElement.querySelectorAll('.form__set'));
-    fieldsetList.forEach( (fieldset) =>  {
-      setEventListeners(fieldset); 
-    });
-  });
-};
+
 
 const hasInvalidInput = (inputList) => {
   return inputList.some( (inputElement) => {
@@ -57,6 +50,64 @@ const toggleButtonState = (inputList, buttonElement) => {
   } else {
     buttonElement.classList.remove('button_inactive');
   }
+}*/
+
+//функция, проверяющая набор inputs на валидность
+function checkInput(inputs) {
+  //проверим, есть ли хотя бы один невалидный input
+  //если true, то нашелся хотя бы один невалидный input 
+  return inputs.some( (inputsItem) => {
+    //вызывается пока не вернется true, а мы ищем хотя бы один невалидный
+    return !inputsItem.validity.valid;
+  });
 }
 
-enableValidation();
+//функция, меняющая состояние кнопки submit на основании валидности inputs
+function toggleButtonState(inputs, submitButton) {
+  //проверим массив inputs на валидность
+  if(checkInput(inputs)) {
+    submitButton.classList.remove(settings.inactiveButtonClass);
+  } else {
+    submitButton.classList.add(settings.inactiveButtonClass);
+  }
+}
+
+//функция, устанавливающая обработчик на набор полей
+function setEventListener(fieldset) {
+  //найдем все inputs в наборе полей
+console.log(settings);
+  const inputs = Array.from(fieldset.querySelectorAll(settings.inputSelector));
+  //найдем кнопку submit
+  const submitButton = fieldset.querySelector(settings.submitButtonSelector);
+  //при инициализации проведем валидацию и на ее основании определим состояние кнопки submit
+console.log('initialize button check');
+  toggleButtonState(inputs,submitButton);
+  //навесим обработчики на ввод в inputs
+  inputs.forEach((inputsItem) => {
+    inputsItem.addEventListener('input', () => {
+      //отобразим или скроем ошибку на основании валидности input
+      validateInput(fieldset,inputsItem);
+      //определим состояние кнопки по результатам валидации
+      toggleButtonState(inputs,submitButton);
+    });
+  });
+}
+
+//функция, активизирующая валидацию с заданными параметрами:
+//formSelector - общий класс для валидируемых форм
+//inputSelector - общий класс для валидируемых inputs
+//submitButtonSelector - общий класс для кнопок submit
+//inactiveButtonClass - модификатор для неактивного состояния кнопки submit
+//inputErrorClass - модификатор для невалидного состояния iтput
+//errorClass - модификатор для активного состояния ошибки
+function enableValidation(settings) {
+  //получим список валидируемых форм
+  const forms = Array.from(document.querySelectorAll(settings.formSelector));
+  forms.forEach((formsItem) => {
+    //отменим стандартную обработку submit
+    formsItem.addEventListener('submit', (evt) => evt.preventDefault());
+    //установим обработчики на все наборы полей
+    const fieldsets = Array.from(formsItem.querySelectorAll(settings.fieldsetSelector));
+    fieldsets.forEach( (fieldsetsItem) => setEventListener(fieldsetsItem));
+  });
+}
