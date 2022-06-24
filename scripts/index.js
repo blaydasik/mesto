@@ -175,7 +175,7 @@ buttonCloseList.forEach(function (item) {
     });
 });
 
-//обработчик нажатия на overlay
+//обработчик клика по overlay
 function closePopupOnClick(popup, evt) {
     if (evt.target.classList.contains('popup_opened')) {
         //для popups с формами отключим валидацию
