@@ -90,17 +90,3 @@ function enableValidation(settings) {
     fieldsets.forEach((fieldsetsItem) => setEventListener(fieldsetsItem, settings));
   });
 }
-
-function validateOnOpen(formCurrent, settings) {
-  const fieldsets = Array.from(formCurrent.querySelectorAll(settings.fieldsetSelector));
-  fieldsets.forEach((fieldsetsItem) => {
-    const inputs = Array.from(fieldsetsItem.querySelectorAll(settings.inputSelector));
-    const submitButton = fieldsetsItem.querySelector(settings.submitButtonSelector);
-    inputs.forEach((inputsItem) => {
-      //отобразим или скроем ошибку на основании валидности input
-      validateInput(fieldsetsItem, inputsItem, settings);
-      //определим состояние кнопки по результатам валидации
-      toggleButtonState(inputs, submitButton);
-    });
-  });
-}

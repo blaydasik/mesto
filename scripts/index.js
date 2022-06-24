@@ -119,7 +119,6 @@ function handleSubmitAddCard(evt) {
     }
     const card = createCard(cardData);
     cardsContainer.prepend(card);
-    evt.target.reset();
     closePopup(popupAddCard);
 }
 
@@ -141,14 +140,12 @@ popupCommonList.forEach((popupItem) => {
 buttonEdit.addEventListener('click', function () {  
     nameInput.value = nameProfile.textContent;
     jobInput.value = aboutProfile.textContent;   
-    validateOnOpen(formProfile, settings); 
     openPopup(popupProfile);
 });
 
 //обработчик нажатия кнопки добавления карточки
 buttonAdd.addEventListener('click', function () {
     formAddCard.reset();
-    validateOnOpen(formAddCard, settings)
     openPopup(popupAddCard);
 });
 
