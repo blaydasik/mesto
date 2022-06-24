@@ -1,7 +1,7 @@
 //функция, отображающая сообщение об ошибки
 function showErrorMessage(fieldset, inputsItem) {
   //определим span для выведения ошибки
-  const errorItem = fieldset.querySelector(`.${inputsItem.id}-error`);
+  const errorItem = fieldset.querySelector(`.popup__${inputsItem.id}-error`);
   //подсветим input с ошибкой
   inputsItem.classList.add(settings.inputErrorClass);
   //запишем текст ошибки в span
@@ -13,7 +13,7 @@ function showErrorMessage(fieldset, inputsItem) {
 //функция, скрывающая сообщение об ошибки
 function hideErrorMessage(fieldset, inputsItem) {
   //определим span, отображающий ошибку
-  const errorItem = fieldset.querySelector(`.${inputsItem.id}-error`);
+  const errorItem = fieldset.querySelector(`.popup__${inputsItem.id}-error`);
   //уберем подсветку input с ошибкой
   inputsItem.classList.remove(settings.inputErrorClass);
   //удалим текст ошибки в span
