@@ -62,10 +62,10 @@
             <label class="popup__label-field">
               <input class="popup__input popup__input_type_name" id="input_type_name"
                 placeholder="Имя" type="text" minlength="2" maxlength="40" required>
-              <span class="popup__error input_type_name-error"></span>
+              <span class="popup__error popup__error_type_name" id="input_type_name-error"></span>
               <input class="popup__input popup__input_type_about" id="input_type_about"
                 placeholder="О себе" type="text" minlength="2" maxlength="200" required>
-              <span class="popup__error input_type_about-error"></span>
+              <span class="popup__error popup__error_type_about" id="input_type_about-error"></span>
             </label>
             <button class="popup__button-save" name="popup__button-save" 
               type="submit">Сохранить</button>
@@ -84,11 +84,11 @@
           <fieldset class="popup__fieldset">
             <label class="popup__label-field">
               <input class="popup__input popup__input_type_title" id="input_type_title"
-                placeholder="Название" type="text" minlength="1" maxlength="30" required>
-              <span class="popup__error input_type_title-error"></span>
+                placeholder="Название" type="text" minlength="2" maxlength="30" required>
+              <span class="popup__error popup__error_type_title" id="input_type_title-error"></span>
               <input class="popup__input popup__input_type_link" id="input_type_link"
                 placeholder="Ссылка на картинку" type="url" required>
-              <span class="popup__error input_type_link-error"></span>
+              <span class="popup__error popup__error_type_link" id="input_type_link-error"></span>
             </label>
             <button class="popup__button-save" name="popup__button-save" 
               type="submit">Создать</button>

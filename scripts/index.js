@@ -18,7 +18,7 @@ const settings = {
 //находим template и его элементы в DOM
 const cardTemplate = document.querySelector('.card-template').content;
 const card = cardTemplate.querySelector('.card');
-const cards = document.querySelector('.cards');
+const cardsContainer = document.querySelector('.cards');
 
 //находим кнопки в DOM
 const buttonEdit = document.querySelector('.profile__edit-button');
@@ -29,6 +29,7 @@ const buttonAdd = document.querySelector('.profile__add-button');
 const popupProfile = document.querySelector('.popup_type_profile');
 const popupAddCard = document.querySelector('.popup_type_add-card');
 const popupPictureView = document.querySelector('.popup_type_picture-view');
+const popupCommonList = document.querySelectorAll('.popup');
 
 //Находим формы в DOM
 const formProfile = document.querySelector('.popup__form_type_profile');
@@ -46,6 +47,9 @@ const aboutProfile = document.querySelector('.profile__about');
 //находим поля для вставки значений в popup
 const popupImageTitle = popupPictureView.querySelector('.popup__image-title');
 const popupImage = popupPictureView.querySelector('.popup__image');
+
+//сохраним функцию - обработчик слушателя нажатия Esc внутри модального окна
+let listenerClosePopupOnEsc = null;
 
 //функция, создающая карточку
 function createCard(cardData) {
@@ -78,9 +82,21 @@ function viewImage(currentCard) {
     openPopup(popupPictureView);
 }
 
+//обработчик нажатия на ESC
+const closePopupOnEsc = () => {
+    if (Event.key === 'Escape') {
+        //closePopup(popup);
+        console.log(Event.key)
+    }
+    console.log(Event)
+}
+
 //функция открывающая popup
 function openPopup(popup) {
-    popup.classList.add('popup_opened');
+    popup.classList.add('popup_opened');    
+    listenerClosePopupOnEsc = () => closePopupOnEsc(popup); 
+console.log(listenerClosePopupOnEsc);   
+    document.addEventListener('keydown', closePopupOnEsc);
 }
 
 //функция закрывающая popup
@@ -94,9 +110,6 @@ function handleSubmitEditProfile(evt) {
     if (!evt.submitter.classList.contains(settings.inactiveButtonClass)) {
         nameProfile.textContent = nameInput.value;
         aboutProfile.textContent = jobInput.value;
-        //отключим валидацию
-        settings.formSelector = '.popup__form_type_profile';
-        disableValidation(settings);
         closePopup(popupProfile);
     }
 }
@@ -110,12 +123,9 @@ function handleSubmitAddCard(evt) {
             img: linkInput.value
         }
         const card = createCard(cardData);
-        cards.prepend(card);
+        cardsContainer.prepend(card);
         evt.target.reset();
         closePopup(popupAddCard);
-        //отключим валидацию
-        settings.formSelector = '.popup__form_type_add-card';
-        disableValidation(settings);
     }
 }
 
@@ -123,6 +133,15 @@ function handleSubmitAddCard(evt) {
 // они будут следить за событием “submit” - «отправка»
 formProfile.addEventListener('submit', handleSubmitEditProfile);
 formAddCard.addEventListener('submit', handleSubmitAddCard);
+
+//прикрепим обработчик клика на overlay
+popupCommonList.forEach( (popupItem) => {
+    popupItem.addEventListener('mousedown', (evt) => {
+        if (evt.target.classList.contains('popup_opened')) {
+            closePopup(popupItem);
+        }
+    });
+});
 
 //прикрепляем обработчики к кнопкам
 buttonEdit.addEventListener('click', function () {
@@ -133,15 +152,11 @@ buttonEdit.addEventListener('click', function () {
 function openEditProfilePopup(popup) {
     nameInput.value = nameProfile.textContent;
     jobInput.value = aboutProfile.textContent;
-    settings.formSelector = '.popup__form_type_profile';
-    enableValidation(settings);
     openPopup(popup);
 }
 
 //обработчик нажатия кнопки добавления карточки
 buttonAdd.addEventListener('click', function (evt) {
-    settings.formSelector = '.popup__form_type_add-card';
-    enableValidation(settings);
     openPopup(popupAddCard);
 });
 
@@ -150,25 +165,18 @@ buttonCloseList.forEach(function (item) {
     item.addEventListener('click', function (evt) {
         //определим, какой popup должен закрыться        
         const popupCurrent = evt.target.closest('.popup');
-        //если это не popup картинки
-        if (!popupCurrent.classList.contains('popup_type_picture-view')) {
-            //найдем форму
-            const formCurrent = popupCurrent.querySelector(settings.formSelector);
-            //очистим поля формы для формы добавления картинок
-            if (formCurrent.classList.contains('popup__form_type_add-card')) formCurrent.reset();
-            //отключим валидацию
-            settings.formSelector = '.' + formCurrent.classList[1];
-            disableValidation(settings);
-        };
+        //удалим слушателей
+console.log(listenerClosePopupOnEsc); 
+        document.removeEventListener('keydown', closePopupOnEsc);
         closePopup(popupCurrent);
     });
 });
 
-//обработчик нажатия на overlay
-
-
 //добавляем инициализированные карточки
 initialCards.forEach((item) => {
     const card = createCard(item);
-    cards.prepend(card);
+    cardsContainer.prepend(card);
 });
+
+//включим валидацию согласно заданным настройкам
+enableValidation(settings);
