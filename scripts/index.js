@@ -47,6 +47,10 @@ const aboutProfile = document.querySelector('.profile__about');
 const popupImageTitle = popupPictureView.querySelector('.popup__image-title');
 const popupImage = popupPictureView.querySelector('.popup__image');
 
+//сохраним функции - обработчики слушателей клика по оверлею и нажатия Esc
+let listenerClosePopupOnClick = null;
+let listenerClosePopupOnEsc = null;
+
 //функция, создающая карточку
 function createCard(cardData) {
     const newCard = card.cloneNode(true);
@@ -81,6 +85,10 @@ function viewImage(currentCard) {
 //функция открывающая popup
 function openPopup(popup) {
     popup.classList.add('popup_opened');
+    listenerClosePopupOnClick = (evt) => closePopupOnClick(popup, evt);
+    listenerClosePopupOnEsc = (evt) => closePopupOnEsc(popup, evt);
+    popup.addEventListener('click', listenerClosePopupOnClick);
+    document.addEventListener('keydown', listenerClosePopupOnEsc);
 }
 
 //функция закрывающая popup
@@ -160,12 +168,34 @@ buttonCloseList.forEach(function (item) {
             settings.formSelector = '.' + formCurrent.classList[1];
             disableValidation(settings);
         };
+        //удалим слушателей
+        popupCurrent.removeEventListener('click', listenerClosePopupOnClick);
+        document.removeEventListener('keydown', listenerClosePopupOnEsc);
         closePopup(popupCurrent);
     });
 });
 
 //обработчик нажатия на overlay
+function closePopupOnClick(popup, evt) {
+    if (evt.target.classList.contains('popup_opened')) {
+        //для popups с формами отключим валидацию
+        if (!popup.classList.contains('popup_type_picture-view')) {
+            disableValidation(settings);
+        }
+        closePopup(popup);
+    }
+}
 
+//обработчик нажатия на ESC
+function closePopupOnEsc(popup, evt) {
+    if (evt.key === 'Escape') {
+        //для popups с формами отключим валидацию
+        if (!popup.classList.contains('popup_type_picture-view')) {
+            disableValidation(settings);
+        }
+        closePopup(popup);
+    }
+}
 
 //добавляем инициализированные карточки
 initialCards.forEach((item) => {
