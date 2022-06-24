@@ -83,10 +83,10 @@ function viewImage(currentCard) {
 }
 
 //обработчик нажатия на ESC
-const closePopupOnEsc = () => {
-    if (Event.key === 'Escape') {
+const closePopupOnEsc = () => (evt, popup) => {
+    if (evt.key === 'Escape') {
         //closePopup(popup);
-        console.log(Event.key)
+        console.log(vent.key)
     }
     console.log(Event)
 }

@@ -7,7 +7,7 @@
   grid-template-columns: 1fr 52px;
   padding: 0;
   margin: 0;
-  justify-self: end; 
+  justify-self: end;
   position: relative;
 }
 

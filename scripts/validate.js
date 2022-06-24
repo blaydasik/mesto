@@ -15,8 +15,7 @@ function showErrorMessage(fieldset, inputsItem) {
 function hideErrorMessage(fieldset, inputsItem) {
   //определим span, отображающий ошибку
   const str = '.popup__error'+`${inputsItem.id}`.slice(5);
-
-   const errorItem = fieldset.querySelector(str);
+  const errorItem = fieldset.querySelector(str);
   //уберем подсветку input с ошибкой
   inputsItem.classList.remove(settings.inputErrorClass);
   //удалим текст ошибки в span
@@ -63,9 +62,6 @@ function handleInput(fieldset, inputs, inputsItem, submitButton) {
   toggleButtonState(inputs, submitButton);
 }
 
-//массив для обработчиков listener
-const handlerName = [];
-
 //функция, устанавливающая обработчик на набор полей
 function setEventListener(fieldset) {
   //найдем все inputs в наборе полей
@@ -75,9 +71,8 @@ function setEventListener(fieldset) {
   //навесим обработчики на ввод в inputs  
   inputs.forEach((inputsItem) => {
     //чтобы при открытии popup произошла валидация
-    handleInput(fieldset, inputs, inputsItem, submitButton);
-    handlerName.push(() => { handleInput(fieldset, inputs, inputsItem, submitButton) });
-    inputsItem.addEventListener('input', handlerName[handlerName.length - 1]);
+    handleInput(fieldset, inputs, inputsItem, submitButton);    
+    inputsItem.addEventListener('input',  handleInput(fieldset, inputs, inputsItem, submitButton));
   });
 }
 
@@ -97,23 +92,5 @@ function enableValidation(settings) {
     //установим обработчики на все наборы полей
     const fieldsets = Array.from(formsItem.querySelectorAll(settings.fieldsetSelector));
     fieldsets.forEach((fieldsetsItem) => setEventListener(fieldsetsItem));
-  });
-}
-
-//функция, отключающая валидацию
-function disableValidation(settings) {
-  //получим список валидируемых форм
-  const forms = Array.from(document.querySelectorAll(settings.formSelector));
-  forms.forEach((formsItem) => {
-    let i = 0;
-    //удалим обработчики со всех наборов полей
-    const fieldsets = Array.from(formsItem.querySelectorAll(settings.fieldsetSelector));
-    fieldsets.forEach((fieldsetsItem) => {
-      const inputs = Array.from(fieldsetsItem.querySelectorAll(settings.inputSelector));
-      inputs.forEach((inputsItem) => {
-        inputsItem.removeEventListener('submit', handlerName[i]);
-        i++;
-      });
-    });
   });
 }
