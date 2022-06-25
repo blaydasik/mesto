@@ -83,8 +83,6 @@ function enableValidation(settings) {
   //получим список валидируемых форм
   const forms = Array.from(document.querySelectorAll(settings.formSelector));
   forms.forEach((formsItem) => {
-    //отменим стандартную обработку submit
-    formsItem.addEventListener('submit', (evt) => evt.preventDefault());
     //установим обработчики на все наборы полей
     const fieldsets = Array.from(formsItem.querySelectorAll(settings.fieldsetSelector));
     fieldsets.forEach((fieldsetsItem) => setEventListener(fieldsetsItem, settings));
