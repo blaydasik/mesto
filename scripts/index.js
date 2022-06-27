@@ -143,13 +143,14 @@ popupCommonList.forEach((popupItem) => {
 buttonEdit.addEventListener('click', function () {  
     nameInput.value = nameProfile.textContent;
     jobInput.value = aboutProfile.textContent;   
+    validateOnOpen(formProfile, settings)
     openPopup(popupProfile);
 });
 
 //обработчик нажатия кнопки добавления карточки
 buttonAdd.addEventListener('click', function () {
     formAddCard.reset();
-    buttonSaveCard.setAttribute("disabled", "disabled"); 
+    validateOnOpen(formAddCard, settings)
     openPopup(popupAddCard);
 });
 

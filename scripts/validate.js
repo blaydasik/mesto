@@ -88,3 +88,18 @@ function enableValidation(settings) {
     fieldsets.forEach((fieldsetsItem) => setEventListener(fieldsetsItem, settings));
   });
 }
+
+//фунция, производящая валидацию формы при открытии popup
+function validateOnOpen(formCurrent, settings) {
+  const fieldsets = Array.from(formCurrent.querySelectorAll(settings.fieldsetSelector));
+  fieldsets.forEach((fieldsetsItem) => {
+    const inputs = Array.from(fieldsetsItem.querySelectorAll(settings.inputSelector));
+    const submitButton = fieldsetsItem.querySelector(settings.submitButtonSelector);
+    inputs.forEach((inputsItem) => {
+      //очистим ошибки
+      hideErrorMessage(fieldsetsItem, inputsItem, settings);
+      //определим состояние кнопки по результатам валидации
+      toggleButtonState(inputs, submitButton);
+    });
+  });
+}
