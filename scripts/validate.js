@@ -95,11 +95,9 @@ function validateOnOpen(formCurrent, settings) {
   fieldsets.forEach((fieldsetsItem) => {
     const inputs = Array.from(fieldsetsItem.querySelectorAll(settings.inputSelector));
     const submitButton = fieldsetsItem.querySelector(settings.submitButtonSelector);
-    inputs.forEach((inputsItem) => {
-      //очистим ошибки
-      hideErrorMessage(fieldsetsItem, inputsItem, settings);
-      //определим состояние кнопки по результатам валидации
-      toggleButtonState(inputs, submitButton);
-    });
+    //определим состояние кнопки по результатам валидации
+    toggleButtonState(inputs, submitButton);
+    //очистим ошибки
+    inputs.forEach((inputsItem) => hideErrorMessage(fieldsetsItem, inputsItem, settings));
   });
 }
