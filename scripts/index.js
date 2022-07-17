@@ -1,3 +1,5 @@
+import {initialCards} from './cards.js';
+
 //параметры валидации:
 //formSelector - общий класс для валидируемых форм
 //inputSelector - общий класс для валидируемых inputs

@@ -1,5 +1,5 @@
-//массив с карточками при загрузке страницы
-const initialCards = [
+ //массив с карточками при загрузке страницы
+ export const initialCards = [
   {
     title: 'Голден ретривер',
     img: './images/golden-retriever.jpg'
