@@ -1,4 +1,6 @@
+//импортируем из модулей
 import {initialCards} from './cards.js';
+import {Card} from './card.js';
 
 //параметры валидации:
 //formSelector - общий класс для валидируемых форм
