@@ -1,5 +1,7 @@
 //импортируем из модулей
+//массив карточек
 import {initialCards} from './cards.js';
+//класс карточки
 import {Card} from './card.js';
 
 //параметры валидации:
@@ -19,9 +21,10 @@ const settings = {
     errorClass: 'popup__error_visible'
 };
 
-//находим template и его элементы в DOM
-const cardTemplate = document.querySelector('.card-template').content;
-const card = cardTemplate.querySelector('.card');
+//настройки для классов
+const cardTemplate = '.card__image';
+
+//находим контейнер для добавления карточек
 const cardsContainer = document.querySelector('.cards');
 
 //находим кнопки в DOM
@@ -52,27 +55,11 @@ const aboutProfile = document.querySelector('.profile__about');
 const popupImageTitle = popupPictureView.querySelector('.popup__image-title');
 const popupImage = popupPictureView.querySelector('.popup__image');
 
-//функция, создающая карточку
-function createCard(cardData) {
-    const newCard = card.cloneNode(true);
-    const newImg = newCard.querySelector('.card__image');
-    //навесим обрабочик на like 
-    const buttonLike = newCard.querySelector('.card__button-like');
-    buttonLike.addEventListener('click', () => {
-        buttonLike.classList.toggle('card__button-like_active');
-    });
-    //навесим обработчик на удаление карточки
-    const buttonDelete = newCard.querySelector('.card__button-delete');
-    buttonDelete.addEventListener('click', () => {
-        newCard.remove();
-    });
-    //навесим обработчик по клику на картинку
-    newImg.addEventListener('click', () => viewImage(cardData));
-    //зададим необходимые свойства карточке
-    newCard.querySelector('.card__title').textContent = cardData.title;
-    newImg.src = cardData.img;
-    newImg.alt = cardData.title;
-    return newCard;
+//функция, добавляющая карточку в разметку
+function addCard(cardData, cardTemplate) {
+    const card = new Card(cardData, cardTemplate);
+    const cardElement = card.fillInCard();
+    cardsContainer.prepend(cardElement);  
 }
 
 //функция, открывающая картинку для просмотра
@@ -114,22 +101,21 @@ function handleSubmitEditProfile(evt) {
 };
 
 //обработчик отправки формы добавления карточки
-function handleSubmitAddCard(evt) {
+function handleSubmitAddCard(evt, cardTemplate) {
     //отменим стандартную обработку submit
     evt.preventDefault();
     const cardData = {
         title: titleInput.value,
         img: linkInput.value
     }
-    const card = createCard(cardData);
-    cardsContainer.prepend(card);
+    addCard(cardData, cardTemplate);
     closePopup(popupAddCard);
 }
 
 // Прикрепляем обработчики к формам:
 // они будут следить за событием “submit” - «отправка»
 formProfile.addEventListener('submit', handleSubmitEditProfile);
-formAddCard.addEventListener('submit', handleSubmitAddCard);
+formAddCard.addEventListener('submit', (evt) => {handleSubmitAddCard(evt, cardTemplate)});
 
 //прикрепим обработчик клика на overlay, он же отслеживает 
 //нажатия на кнопку закрытия popup
@@ -159,10 +145,7 @@ buttonAdd.addEventListener('click', function () {
 });
 
 //добавляем инициализированные карточки
-initialCards.forEach((item) => {
-    const card = createCard(item);
-    cardsContainer.prepend(card);
-});
+initialCards.forEach((item) => addCard(item, cardTemplate));
 
 //включим валидацию согласно заданным настройкам
 enableValidation(settings);
