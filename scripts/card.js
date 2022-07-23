@@ -1,50 +1,63 @@
 export class Card {
 
-  constructor(cardData, templateSelector) {
+  constructor(cardData, templateSelector, viewImage) {
     this._title = cardData.title;
     this._src = cardData.img;
     this._alt = cardData.title;
+    this._templateSelector = templateSelector;
+    this._viewImage = viewImage;
   }
 
   //приватный метод для получения шаблона разметки карточки
   _getTemplate() {
     const cardElement = document
-    .querySelector('.card-template')
-    .content
-    .querySelector('.card')
-    .cloneNode(true);
-    
-    return cardElement;  
+      .querySelector(this._templateSelector)
+      .content
+      .querySelector('.card')
+      .cloneNode(true);
+
+    return cardElement;
   }
 
   //частный метод для заполения карточки данными
   fillInCard() {
     this._element = this._getTemplate();
-    //зададим необходимые свойства карточке
-    const newImg = this._element.querySelector('.card__image');
-    newImg.src = this._src;
-    newImg.alt = this._alt;  
+    //выберем все нужные элементы
+    this._newImg = this._element.querySelector('.card__image');
+    this._buttonLike = this._element.querySelector('.card__button-like');
+    this._buttonDelete = this._element.querySelector('.card__button-delete');
+    //добавим обработчики
+    this._setEventListeners();
+    //зададим необходимые свойства карточке    
+    this._newImg.src = this._src;
+    this._newImg.alt = this._alt;
     this._element.querySelector('.card__title').textContent = this._title;
-  
+
     //вернём элемент наружу
     return this._element;
   }
-}
 
-//функция, создающая карточку
-function createCard(cardData) {
+  //навесим обработчики
+  _setEventListeners() {
+    //на like   
+    this._buttonLike.addEventListener('click', () => this._handleLikeButton());
 
-  
-  //навесим обрабочик на like 
-  const buttonLike = newCard.querySelector('.card__button-like');
-  buttonLike.addEventListener('click', () => {
-      buttonLike.classList.toggle('card__button-like_active');
-  });
-  //навесим обработчик на удаление карточки
-  const buttonDelete = newCard.querySelector('.card__button-delete');
-  buttonDelete.addEventListener('click', () => {
-      newCard.remove();
-  });
-  //навесим обработчик по клику на картинку
-  newImg.addEventListener('click', () => viewImage(cardData));
+    //на удаление карточки    
+    this._buttonDelete.addEventListener('click', () => this._handleDeleteButton());
+
+    //по клику на картинку
+    this._newImg.addEventListener('click', () => {
+      this._viewImage({ title: this._title, img: this._src });
+    });
+  }
+
+  //обработчик лайка
+  _handleLikeButton() {
+    this._buttonLike.classList.toggle('card__button-like_active');
+  }
+
+  //обработчик удаления карточки
+  _handleDeleteButton() {
+    this._element.remove();
+  }
 }

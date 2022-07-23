@@ -1,17 +1,21 @@
 //импортируем из модулей
 //массив карточек
-import {initialCards} from './cards.js';
+import { initialCards } from './cards.js';
 //класс карточки
-import {Card} from './card.js';
+import { Card } from './card.js';
+//класс для валидации формы
+import { FormValidator } from './FormValidator.js';
+
 
 //параметры валидации:
 //formSelector - общий класс для валидируемых форм
+//fieldsetSelector - общий класс для fildset'ов
 //inputSelector - общий класс для валидируемых inputs
 //submitButtonSelector - общий класс для кнопок submit
 //inactiveButtonClass - модификатор для неактивного состояния кнопки submit
 //inputErrorClass - модификатор для невалидного состояния iтput
 //errorClass - модификатор для активного состояния ошибки
-const settings = {
+const validationSettings = {
     formSelector: '.popup__form',
     fieldsetSelector: '.popup__fieldset',
     inputSelector: '.popup__input',
@@ -22,7 +26,7 @@ const settings = {
 };
 
 //настройки для классов
-const cardTemplate = '.card__image';
+const cardTemplate = '.card-template';
 
 //находим контейнер для добавления карточек
 const cardsContainer = document.querySelector('.cards');
@@ -38,6 +42,10 @@ const popupAddCard = document.querySelector('.popup_type_add-card');
 const popupPictureView = document.querySelector('.popup_type_picture-view');
 const popupCommonList = document.querySelectorAll('.popup');
 
+//находим поля для вставки значений в popup
+const popupImageTitle = popupPictureView.querySelector('.popup__image-title');
+const popupImage = popupPictureView.querySelector('.popup__image');
+
 //Находим формы в DOM
 const formProfile = document.querySelector('.popup__form_type_profile');
 const formAddCard = document.querySelector('.popup__form_type_add-card');
@@ -51,22 +59,18 @@ const linkInput = formAddCard.querySelector('.popup__input_type_link');
 const nameProfile = document.querySelector('.profile__name');
 const aboutProfile = document.querySelector('.profile__about');
 
-//находим поля для вставки значений в popup
-const popupImageTitle = popupPictureView.querySelector('.popup__image-title');
-const popupImage = popupPictureView.querySelector('.popup__image');
-
 //функция, добавляющая карточку в разметку
-function addCard(cardData, cardTemplate) {
-    const card = new Card(cardData, cardTemplate);
+function addCard(cardData, cardTemplate, viewImage) {
+    const card = new Card(cardData, cardTemplate, viewImage);
     const cardElement = card.fillInCard();
-    cardsContainer.prepend(cardElement);  
+    cardsContainer.prepend(cardElement);
 }
 
 //функция, открывающая картинку для просмотра
-function viewImage(currentCard) {
-    popupImageTitle.textContent = currentCard.title;
-    popupImage.src = currentCard.img;
-    popupImage.alt = currentCard.title;
+function viewImage(cardData) {
+    popupImageTitle.textContent = cardData.title;
+    popupImage.src = cardData.img;
+    popupImage.alt = cardData.title;
     openPopup(popupPictureView);
 }
 
@@ -108,44 +112,47 @@ function handleSubmitAddCard(evt, cardTemplate) {
         title: titleInput.value,
         img: linkInput.value
     }
-    addCard(cardData, cardTemplate);
+    addCard(cardData, cardTemplate, viewImage);
     closePopup(popupAddCard);
 }
 
 // Прикрепляем обработчики к формам:
 // они будут следить за событием “submit” - «отправка»
 formProfile.addEventListener('submit', handleSubmitEditProfile);
-formAddCard.addEventListener('submit', (evt) => {handleSubmitAddCard(evt, cardTemplate)});
+formAddCard.addEventListener('submit', (evt) => { handleSubmitAddCard(evt, cardTemplate) });
 
 //прикрепим обработчик клика на overlay, он же отслеживает 
 //нажатия на кнопку закрытия popup
 popupCommonList.forEach((popupItem) => {
     popupItem.addEventListener('mousedown', (evt) => {
-        const clickedElementCL = evt.target.classList; 
-        if ( (clickedElementCL.contains('popup_opened')) ||
-            (clickedElementCL.contains('popup__button-close')) ) {
+        const clickedElementCL = evt.target.classList;
+        if ((clickedElementCL.contains('popup_opened')) ||
+            (clickedElementCL.contains('popup__button-close'))) {
             closePopup(popupItem);
         }
     });
 });
 
 //обработчик нажатия кнопки редактирования профиля
-buttonEdit.addEventListener('click', function () {  
+buttonEdit.addEventListener('click', function () {
     nameInput.value = nameProfile.textContent;
-    jobInput.value = aboutProfile.textContent;   
-    validateOnOpen(formProfile, settings)
+    jobInput.value = aboutProfile.textContent;
+    formProfileValidator.validateOnOpen();
     openPopup(popupProfile);
 });
 
 //обработчик нажатия кнопки добавления карточки
 buttonAdd.addEventListener('click', function () {
     formAddCard.reset();
-    validateOnOpen(formAddCard, settings)
+    formAddCardValidator.validateOnOpen();
     openPopup(popupAddCard);
 });
 
 //добавляем инициализированные карточки
-initialCards.forEach((item) => addCard(item, cardTemplate));
+initialCards.forEach((item) => addCard(item, cardTemplate, viewImage));
 
-//включим валидацию согласно заданным настройкам
-enableValidation(settings);
+//включим валидацию для форм согласно заданным настройкам
+const formProfileValidator = new FormValidator(validationSettings, formProfile);
+formProfileValidator.enableValidation();
+const formAddCardValidator = new FormValidator(validationSettings, formAddCard);
+formAddCardValidator.enableValidation();
