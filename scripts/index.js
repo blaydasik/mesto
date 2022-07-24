@@ -2,7 +2,7 @@
 //массив карточек
 import { initialCards } from './cards.js';
 //класс карточки
-import { Card } from './card.js';
+import { Card } from './Сard.js';
 //класс для валидации формы
 import { FormValidator } from './FormValidator.js';
 
@@ -60,10 +60,10 @@ const nameProfile = document.querySelector('.profile__name');
 const aboutProfile = document.querySelector('.profile__about');
 
 //функция, добавляющая карточку в разметку
-function addCard(cardData, cardTemplate, viewImage) {
+function createCard(cardData, cardTemplate, viewImage) {
     const card = new Card(cardData, cardTemplate, viewImage);
-    const cardElement = card.fillInCard();
-    cardsContainer.prepend(cardElement);
+    const cardElement = card.fillInCard(); 
+    return(cardElement);
 }
 
 //функция, открывающая картинку для просмотра
@@ -112,7 +112,7 @@ function handleSubmitAddCard(evt, cardTemplate) {
         title: titleInput.value,
         img: linkInput.value
     }
-    addCard(cardData, cardTemplate, viewImage);
+    cardsContainer.prepend(createCard(cardData, cardTemplate, viewImage));
     closePopup(popupAddCard);
 }
 
@@ -149,7 +149,9 @@ buttonAdd.addEventListener('click', function () {
 });
 
 //добавляем инициализированные карточки
-initialCards.forEach((item) => addCard(item, cardTemplate, viewImage));
+initialCards.forEach((item) => {
+    cardsContainer.prepend(createCard(item, cardTemplate, viewImage));
+});
 
 //включим валидацию для форм согласно заданным настройкам
 const formProfileValidator = new FormValidator(validationSettings, formProfile);
