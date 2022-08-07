@@ -2,13 +2,14 @@
 //import './index.css'; 
 
 //импортируем из модулей
+//класс для отрисовки элементов
+import { Section } from '../components/Section.js'
 //массив карточек
 import { initialCards } from '../components/cards.js';
 //класс карточки
 import { Card } from '../components/Сard.js';
 //класс для валидации формы
 import { FormValidator } from '../components/FormValidator.js';
-
 
 //параметры валидации:
 //formSelector - общий класс для валидируемых форм
@@ -31,8 +32,8 @@ const validationSettings = {
 //настройки для классов
 const cardTemplate = '.card-template';
 
-//находим контейнер для добавления карточек
-const cardsContainer = document.querySelector('.cards');
+//селектор контейнера для добавления карточек
+const cardsContainer = '.cards';
 
 //находим кнопки в DOM
 const buttonEdit = document.querySelector('.profile__edit-button');
@@ -62,11 +63,11 @@ const linkInput = formAddCard.querySelector('.popup__input_type_link');
 const nameProfile = document.querySelector('.profile__name');
 const aboutProfile = document.querySelector('.profile__about');
 
-//функция, добавляющая карточку в разметку
+//функция, создающая карточку
 function createCard(cardData, cardTemplate, viewImage) {
     const card = new Card(cardData, cardTemplate, viewImage);
-    const cardElement = card.fillInCard(); 
-    return(cardElement);
+    const cardElement = card.fillInCard();
+    return (cardElement);
 }
 
 //функция, открывающая картинку для просмотра
@@ -115,7 +116,13 @@ function handleSubmitAddCard(evt, cardTemplate) {
         title: titleInput.value,
         img: linkInput.value
     }
-    cardsContainer.prepend(createCard(cardData, cardTemplate, viewImage));
+    const cardList = new Section({
+        items: [cardData],
+        renderer: (item) => {
+            cardList.addItem(createCard(item, cardTemplate, viewImage));
+        }
+    }, cardsContainer);
+    cardList.renderElements();
     closePopup(popupAddCard);
 }
 
@@ -152,9 +159,13 @@ buttonAdd.addEventListener('click', function () {
 });
 
 //добавляем инициализированные карточки
-initialCards.forEach((item) => {
-    cardsContainer.prepend(createCard(item, cardTemplate, viewImage));
-});
+const cardList = new Section({
+    items: initialCards,
+    renderer: (item) => {
+        cardList.addItem(createCard(item, cardTemplate, viewImage));
+    }
+}, cardsContainer);
+cardList.renderElements();
 
 //включим валидацию для форм согласно заданным настройкам
 const formProfileValidator = new FormValidator(validationSettings, formProfile);
