@@ -1,5 +1,5 @@
 //импорт главного файла стилей
-//import './index.css'; 
+import './index.css'; 
 
 //импортируем из модулей
 //класс для отрисовки элементов
@@ -8,7 +8,7 @@ import { Section } from '../components/Section.js'
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 //массив карточек
-import { initialCards } from '../components/cards.js';
+import { initialCards } from '../utils/cards.js';
 //класс карточки
 import { Card } from '../components/Сard.js';
 //класс для валидации формы

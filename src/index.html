@@ -7,8 +7,7 @@
   <meta name="author" content="Яндекс.Практикум">
   <meta name="author" content="Алексей Куров">
   <meta name="keywords" content="mesto, сервис размещения фотографий">
-  <link rel="stylesheet" href="./pages/index.css">
-  <link rel="shortcut icon" href="./images/logo/favicon.ico">
+  <link rel="shortcut icon" href="<%=require('./images/logo/favicon.ico')%>">
   <title>Место</title>
 </head>
 
@@ -22,7 +21,7 @@
     <main class="content">
 
       <section class="profile">
-        <img class="profile__picture" src="./images/profile-pic.jpg" alt="аватар пользователя.">
+        <img class="profile__picture" src="<%=require('./images/profile-pic.jpg')%>" alt="аватар пользователя.">
         <div class="profile__info">
           <h1 class="profile__name">Барон Мюнхгаузен</h1>
           <button class="profile__edit-button" name='profile__edit-button' 
@@ -107,8 +106,6 @@
     </div>
 
   </div>
-
-  <script type="module" src="./pages/index.js"></script>
 
 </body>
 
