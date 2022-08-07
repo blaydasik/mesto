@@ -1,11 +1,11 @@
 export class Card {
 
-  constructor(cardData, templateSelector, viewImage) {
+  constructor(cardData, templateSelector, handleCardClick) {
     this._title = cardData.title;
     this._src = cardData.img;
     this._alt = cardData.title;
     this._templateSelector = templateSelector;
-    this._viewImage = viewImage;
+    this._handleCardClick = handleCardClick;
   }
 
   //приватный метод для получения шаблона разметки карточки
@@ -47,7 +47,7 @@ export class Card {
 
     //по клику на картинку
     this._newImg.addEventListener('click', () => {
-      this._viewImage({ title: this._title, img: this._src });
+      this._handleCardClick({ title: this._title, img: this._src });
     });
   }
 
