@@ -1,5 +1,5 @@
 //импорт главного файла стилей
-import './index.css'; 
+import './index.css';
 
 //импортируем из модулей
 //класс для отрисовки элементов
@@ -15,24 +15,8 @@ import { Card } from '../components/Сard.js';
 import { FormValidator } from '../components/FormValidator.js';
 //класс информации о пользователе
 import { UserInfo } from '../components/UserInfo.js';
-
-//параметры валидации:
-//formSelector - общий класс для валидируемых форм
-//fieldsetSelector - общий класс для fildset'ов
-//inputSelector - общий класс для валидируемых inputs
-//submitButtonSelector - общий класс для кнопок submit
-//inactiveButtonClass - модификатор для неактивного состояния кнопки submit
-//inputErrorClass - модификатор для невалидного состояния iтput
-//errorClass - модификатор для активного состояния ошибки
-const validationSettings = {
-    formSelector: '.popup__form',
-    fieldsetSelector: '.popup__fieldset',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button-save',
-    inactiveButtonClass: 'popup__button-save_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-};
+//константы
+import { validationSettings } from '../utils/constants.js';
 
 //настройки для классов
 const cardTemplate = '.card-template';
@@ -77,24 +61,21 @@ function handleSubmitEditProfile(userData) {
 
 //обработчик submit формы добавления карточки
 function handleSubmitAddCard(cardData) {
-    const cardList = new Section({
-        items: [cardData],
-        renderer: (item) => {
-            cardList.addItem(createCard(item, cardTemplate, popupPictureView));
-        }
-    }, cardsContainer);
-    cardList.renderElements();
+    cardList.addItem(createCard(cardData, cardTemplate, popupPictureView));
     popupAddCard.close();
 }
 
 //обработчик нажатия кнопки редактирования профиля
-buttonEdit.addEventListener('click', function () {
+function handleEditProfile() {
     const { name, about } = userInformation.getUserInfo();
     nameInput.value = name;
     jobInput.value = about;
     formProfileValidator.validateOnOpen();
     popupProfile.open();
-});
+}
+
+//навесим обработчик на кнопку редактирования профиля
+buttonEdit.addEventListener('click', handleEditProfile);
 
 //обработчик нажатия кнопки добавления карточки
 buttonAdd.addEventListener('click', function () {
