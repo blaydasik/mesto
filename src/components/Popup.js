@@ -8,13 +8,13 @@ export class Popup {
   //публичный метод для открытия popup
   open() {
     this._popup.classList.add('popup_opened');
-    document.addEventListener('keydown', this._handleEscClose);
+    document.addEventListener('keyup', this._handleEscClose);
   }
 
   //публичный метод для закрытия popup
   close() {
     this._popup.classList.remove('popup_opened');
-    document.removeEventListener('keydown', this._handleEscClose);
+    document.removeEventListener('keyup', this._handleEscClose);
   }
 
   //приватный метод для закрытия popup при нажатии на Esc
