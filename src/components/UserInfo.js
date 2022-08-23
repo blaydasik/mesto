@@ -1,8 +1,9 @@
 export class UserInfo {
 
-  constructor({ selectorName, selectorAbout }) {
+  constructor({ selectorName, selectorAbout, selectorAvatar }) {
     this._name = document.querySelector(selectorName);
     this._about = document.querySelector(selectorAbout);
+    this._avatar = document.querySelector(selectorAvatar);
   }
 
   //публичный метод, получающий данные о пользователе из html
@@ -14,8 +15,9 @@ export class UserInfo {
   }
 
   //публичный метод, добавляющий данные пользователя на страницу
-  setUserInfo({ name_profile, about_profile }) {
-    this._name.textContent = name_profile;
-    this._about.textContent = about_profile;
+  setUserInfo({ name, about, avatar }) {
+    this._name.textContent = name;
+    this._about.textContent = about;
+    this._avatar.src = avatar;
   }
 }

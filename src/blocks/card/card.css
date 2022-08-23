@@ -4,7 +4,7 @@
   width: 100%;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1fr 52px;
+  grid-template-columns: 1fr 42px;
   padding: 0;
   margin: 0;
   justify-self: end;

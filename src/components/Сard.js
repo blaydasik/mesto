@@ -1,11 +1,12 @@
 export class Card {
 
-  constructor(cardData, templateSelector, handleCardClick) {
+  constructor(cardData, templateSelector, handleCardClick, handleDeleteCard) {
     this._title = cardData.title;
     this._src = cardData.img;
     this._alt = cardData.title;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
+    this._handleDeleteCard = handleDeleteCard;    
   }
 
   //приватный метод для получения шаблона разметки карточки
@@ -15,7 +16,6 @@ export class Card {
       .content
       .querySelector('.card')
       .cloneNode(true);
-
     return cardElement;
   }
 
@@ -43,7 +43,8 @@ export class Card {
     this._buttonLike.addEventListener('click', () => this._handleLikeButton());
 
     //на удаление карточки    
-    this._buttonDelete.addEventListener('click', () => this._handleDeleteButton());
+    this._buttonDelete.addEventListener('click', () => this._handleDeleteCard());
+    
 
     //по клику на картинку
     this._newImg.addEventListener('click', () => {
@@ -58,6 +59,7 @@ export class Card {
 
   //обработчик удаления карточки
   _handleDeleteButton() {
+
     this._element.remove();
     this._element = null;
   }

@@ -9,7 +9,7 @@ export class Section {
 
   //публичный метод для отрисовки всех элементов
   renderElements() {
-    this._initialItems.forEach((item) => this._renderer(item));
+    this._initialItems.forEach(this._renderer.bind(this));
   }
 
   //публичный метод для добавления DOM-элемента в контейнер
