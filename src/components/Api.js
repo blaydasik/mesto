@@ -41,14 +41,44 @@ export class Api {
       .then(this._validateAnswer.bind(this));
   }
 
-    //публичный метод, добавляющий карточку на сервер
-    addNewCard(cardData) {
-      return fetch(`${this.link}/cards`, {
-        method: "POST",
-        headers: this.headers,
-        body: JSON.stringify(cardData)
+  //публичный метод, добавляющий карточку на сервер
+  addNewCard(cardData) {
+    return fetch(`${this.link}/cards`, {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify(cardData)
+    })
+      .then(this._validateAnswer.bind(this));
+  }
+
+  //публичный метод, удаляющий карточку с сервера
+  deleteCard(cardID) {
+    return fetch(`${this.link}/cards/${cardID}`, {
+      method: "DELETE",
+      headers: this.headers,
+    })
+      .then(this._validateAnswer.bind(this));
+  }
+
+  //публичный метод для постановки/удаления лайка
+  proceedLike(cardID, state) {
+    return fetch(`${this.link}/cards/${cardID}/likes`, {
+      method: (state ? "DELETE" : "PUT"),
+      headers: this.headers,
+    })
+      .then(this._validateAnswer.bind(this));
+  }
+
+  //публичный метод для обновления аватара пользователя
+  updateUserAvatar(link) {
+    return fetch(`${this.link}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify({
+        avatar: link
       })
-        .then(this._validateAnswer.bind(this));
-    }
+    })
+      .then(this._validateAnswer.bind(this));
+  }
 
 }

@@ -17,4 +17,10 @@ export class Section {
     this._container.append(element);
   }
 
+  //публичный метод для удаления DOM-элемента со страницы
+  deleteItem(element) {
+    element.remove();
+    element = null;
+  }
+
 }

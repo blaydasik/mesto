@@ -38,12 +38,15 @@ const popupAddCard = new PopupWithForm('.popup_type_add-card', handleSubmitAddCa
 popupAddCard.setEventListeners();
 const popupPictureView = new PopupWithImage('.popup_type_picture-view');
 popupPictureView.setEventListeners();
-const popupConfirmDeleteCard = new PopupConfirmDelete('.popup_type_confirm_delete');
+const popupConfirmDeleteCard = new PopupConfirmDelete('.popup_type_confirm_delete', handleDeleteCard);
 popupConfirmDeleteCard.setEventListeners();
+const popupUpdateAvatar = new PopupWithForm('.popup_type_update-avatar', handleSubmitUpdateAvatar);
+popupUpdateAvatar.setEventListeners();
 
 //Находим формы в DOM
 const formProfile = document.querySelector('.popup__form_type_profile');
 const formAddCard = document.querySelector('.popup__form_type_add-card');
+const formUpdateAvatar = document.querySelector('.popup__form_type_update-avatar');
 //находим поля форм в DOM
 const nameInput = formProfile.querySelector('.popup__input_type_name');
 const jobInput = formProfile.querySelector('.popup__input_type_about');
@@ -51,36 +54,33 @@ const jobInput = formProfile.querySelector('.popup__input_type_about');
 //создадим класс информации о пользователе
 const userInformation = new UserInfo({ selectorName: '.profile__name', selectorAbout: '.profile__about', selectorAvatar: '.profile__picture' });
 
-//идентификатор пользователя
-let myId;
 //массив карточек
 let cardList;
 
 //создадим класс для работы с Api
 const workingApi = new Api(apiSettings);
 
-//обработчик ошибки в запросе
+//обработчик ошибок в запросе
 function proceedError(err) {
   alert(`Ошибка. Запрос не выполнен: ${err}`);
 }
 
-//получим информацию о пользователе
-workingApi.downloadUserInfo()
-  .then((data) => {
-    userInformation.setUserInfo(data);
-    myId = data._id;
-  })
-  .catch(proceedError.bind(this));
-
-//получим массив карточек с сервера
-workingApi.downloadCards()
-  .then((data) => {
-    //добавим их на страницу
+//получим информацию о пользователе и массив карточек с сервера
+Promise.all([workingApi.downloadUserInfo(), workingApi.downloadCards()])
+  .then(([userData, cardsData]) => {
+    userInformation.setUserInfo(userData);
+    //добавим карточки на страницу
     cardList = new Section({
-      items: data,
+      items: cardsData,
       renderer: (item) => {
-        cardList.addItem(createCard(item, cardTemplate,
-          popupPictureView, popupConfirmDeleteCard));
+        //проверим, принадлежит ли карточка пользователю
+        const isMine = (item.owner._id === userData._id);
+        //проверим лайкал ли пользователь карточку
+        const isLiked = item.likes.some((likesArray) => {
+          return (likesArray._id === userData._id);
+        });
+        cardList.addItem(createCard(item, cardTemplate, isMine, isLiked,
+          popupPictureView, popupConfirmDeleteCard, hadleLike));
       }
     }, cardsContainer);
     cardList.renderElements();
@@ -88,34 +88,44 @@ workingApi.downloadCards()
   .catch(proceedError.bind(this));
 
 //функция, создающая карточку
-function createCard(cardData, cardTemplate, popupPictureView, popupConfirmDeleteCard) {
-  const card = new Card(cardData, cardTemplate,
+function createCard(cardData, cardTemplate, isMine, isLiked, popupPictureView,
+  popupConfirmDeleteCard, hadleLike) {
+  const card = new Card(cardData, cardTemplate, isMine, isLiked,
     popupPictureView.open.bind(popupPictureView),
-    popupConfirmDeleteCard.open.bind(popupConfirmDeleteCard));
+    popupConfirmDeleteCard.open.bind(popupConfirmDeleteCard),
+    hadleLike);
   const cardElement = card.fillInCard();
   return (cardElement);
 }
-
-//обработчик submit формы редактирования профиля
-function handleSubmitEditProfile(userData) {
-  workingApi.setNewUserInfo(userData)
-    //при успешном выполнении обновляем данные на странице
-    .then((data) => {
-      userInformation.setUserInfo(data);
-      popupProfile.close();
-    })
-    .catch(proceedError.bind(this));
-};
 
 //обработчик submit формы добавления карточки
 function handleSubmitAddCard(cardData) {
   workingApi.addNewCard(cardData)
     //при успешном выполнении обновляем данные на странице
     .then((data) => {
-      cardList.addItem(createCard(data, cardTemplate,
-        popupPictureView, popupConfirmDeleteCard));
+      cardList.addItem(createCard(data, cardTemplate, true, false,
+        popupPictureView, popupConfirmDeleteCard), hadleLike);
       popupAddCard.close();
     })
+    .catch(proceedError.bind(this));
+}
+
+//функция для удаления карточки с сервера
+function handleDeleteCard(cardElement, cardID) {
+  workingApi.deleteCard(cardID)
+    //при успешном выполнении обновляем данные на странице
+    .then((data) => {
+      cardList.deleteItem(cardElement);
+      popupConfirmDeleteCard.close();
+    })
+    .catch(proceedError.bind(this));
+}
+
+//функция, обрабатывающая нажатие на лайк
+function hadleLike(cardId, state, renderLike) {
+  workingApi.proceedLike(cardId, state)
+    //при успешном выполнении обновляем данные на странице
+    .then((data) => renderLike(data))
     .catch(proceedError.bind(this));
 }
 
@@ -128,6 +138,28 @@ function handleEditProfile() {
   popupProfile.open();
 }
 
+//обработчик submit формы редактирования профиля
+function handleSubmitEditProfile(userData) {
+  workingApi.setNewUserInfo(userData)
+    //при успешном выполнении обновляем данные на странице
+    .then((data) => {
+      userInformation.setUserInfo(data);
+      popupProfile.close();
+    })
+    .catch(proceedError.bind(this));
+}
+
+//обработчик submit формы обновления аватара
+function handleSubmitUpdateAvatar(link) {
+  workingApi.updateUserAvatar(link.avatar)
+    //при успешном выполнении обновляем данные на странице
+    .then((data) => {
+      userInformation.setUserInfo(data);
+      popupUpdateAvatar.close();
+    })
+    .catch(proceedError.bind(this));
+}
+
 //навесим обработчик на кнопку редактирования профиля
 buttonEdit.addEventListener('click', handleEditProfile);
 
@@ -137,14 +169,10 @@ buttonAdd.addEventListener('click', function () {
   popupAddCard.open();
 });
 
-//обработчик нажатия на кнопку удаления карточки
-function handleDeleteCardClick() {
-  console.log("openpopup");
-  popupConfirmDeleteCard.open();
-}
-
 //включим валидацию для форм согласно заданным настройкам
 const formProfileValidator = new FormValidator(validationSettings, formProfile);
 formProfileValidator.enableValidation();
 const formAddCardValidator = new FormValidator(validationSettings, formAddCard);
 formAddCardValidator.enableValidation();
+const formUpdateAvatarValidator = new FormValidator(validationSettings, formUpdateAvatar);
+formUpdateAvatarValidator.enableValidation();
