@@ -19,6 +19,7 @@ import { Api } from '../components/Api.js';
 //константы
 import { validationSettings } from '../utils/constants.js';
 import { apiSettings } from '../utils/constants.js';
+import { WatchIgnorePlugin } from 'webpack';
 
 
 //настройки для классов
@@ -30,6 +31,7 @@ const cardsContainer = '.cards';
 //находим кнопки в DOM
 const buttonEdit = document.querySelector('.profile__edit-button');
 const buttonAdd = document.querySelector('.profile__add-button');
+const buttonUpdate = document.querySelector('.profile__update-button');
 
 //создадим экземпляры классов popup'ов
 const popupProfile = new PopupWithForm('.popup_type_profile', handleSubmitEditProfile);
@@ -80,7 +82,7 @@ Promise.all([workingApi.downloadUserInfo(), workingApi.downloadCards()])
           return (likesArray._id === userData._id);
         });
         cardList.addItem(createCard(item, cardTemplate, isMine, isLiked,
-          popupPictureView, popupConfirmDeleteCard, hadleLike));
+          popupPictureView, popupConfirmDeleteCard, handleLike));
       }
     }, cardsContainer);
     cardList.renderElements();
@@ -89,11 +91,11 @@ Promise.all([workingApi.downloadUserInfo(), workingApi.downloadCards()])
 
 //функция, создающая карточку
 function createCard(cardData, cardTemplate, isMine, isLiked, popupPictureView,
-  popupConfirmDeleteCard, hadleLike) {
+  popupConfirmDeleteCard, handleLike) {
   const card = new Card(cardData, cardTemplate, isMine, isLiked,
     popupPictureView.open.bind(popupPictureView),
     popupConfirmDeleteCard.open.bind(popupConfirmDeleteCard),
-    hadleLike);
+    handleLike);
   const cardElement = card.fillInCard();
   return (cardElement);
 }
@@ -104,7 +106,7 @@ function handleSubmitAddCard(cardData) {
     //при успешном выполнении обновляем данные на странице
     .then((data) => {
       cardList.addItem(createCard(data, cardTemplate, true, false,
-        popupPictureView, popupConfirmDeleteCard), hadleLike);
+        popupPictureView, popupConfirmDeleteCard, handleLike));
       popupAddCard.close();
     })
     .catch(proceedError.bind(this));
@@ -122,7 +124,7 @@ function handleDeleteCard(cardElement, cardID) {
 }
 
 //функция, обрабатывающая нажатие на лайк
-function hadleLike(cardId, state, renderLike) {
+function handleLike(cardId, state, renderLike) {
   workingApi.proceedLike(cardId, state)
     //при успешном выполнении обновляем данные на странице
     .then((data) => renderLike(data))
@@ -140,13 +142,15 @@ function handleEditProfile() {
 
 //обработчик submit формы редактирования профиля
 function handleSubmitEditProfile(userData) {
+  popupProfile.renderUX();
   workingApi.setNewUserInfo(userData)
     //при успешном выполнении обновляем данные на странице
     .then((data) => {
       userInformation.setUserInfo(data);
       popupProfile.close();
     })
-    .catch(proceedError.bind(this));
+    .catch(proceedError.bind(this))
+    .finally( () => popupProfile.renderUX());
 }
 
 //обработчик submit формы обновления аватара
@@ -167,6 +171,12 @@ buttonEdit.addEventListener('click', handleEditProfile);
 buttonAdd.addEventListener('click', function () {
   formAddCardValidator.validateOnOpen();
   popupAddCard.open();
+});
+
+//навесим обработчик на кнопку редактирования аватара
+buttonUpdate.addEventListener('click', function () {
+  formUpdateAvatarValidator.validateOnOpen();
+  popupUpdateAvatar.open();
 });
 
 //включим валидацию для форм согласно заданным настройкам
