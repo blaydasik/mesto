@@ -13,19 +13,19 @@ export class PopupWithForm extends Popup {
 
   //приватный метод, получающий данные полей формы
   _getInputValues() {
-    this._inputList.forEach( (input) => {
+    this._inputList.forEach((input) => {
       this._formValues[input.name] = input.value;
     });
     return this._formValues;
   }
 
   //добавим обработчик submit form
-  setEventListeners() {    
+  setEventListeners() {
     this._form.addEventListener('submit', (evt) => {
       evt.preventDefault();
       this._handleFormSubmit(this._getInputValues());
-    });   
-    super.setEventListeners(); 
+    });
+    super.setEventListeners();
   }
 
   //добавим очистку формы при закрытии

@@ -8,8 +8,6 @@ import { Section } from '../components/Section.js'
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupConfirmDelete } from '../components/PopupConfirmDelete.js';
-//массив карточек
-import { initialCards } from '../utils/cards.js';
 //класс карточки
 import { Card } from '../components/Сard.js';
 //класс для валидации формы
@@ -55,6 +53,8 @@ const userInformation = new UserInfo({ selectorName: '.profile__name', selectorA
 
 //идентификатор пользователя
 let myId;
+//массив карточек
+let cardList;
 
 //создадим класс для работы с Api
 const workingApi = new Api(apiSettings);
@@ -72,6 +72,21 @@ workingApi.downloadUserInfo()
   })
   .catch(proceedError.bind(this));
 
+//получим массив карточек с сервера
+workingApi.downloadCards()
+  .then((data) => {
+    //добавим их на страницу
+    cardList = new Section({
+      items: data,
+      renderer: (item) => {
+        cardList.addItem(createCard(item, cardTemplate,
+          popupPictureView, popupConfirmDeleteCard));
+      }
+    }, cardsContainer);
+    cardList.renderElements();
+  })
+  .catch(proceedError.bind(this));
+
 //функция, создающая карточку
 function createCard(cardData, cardTemplate, popupPictureView, popupConfirmDeleteCard) {
   const card = new Card(cardData, cardTemplate,
@@ -83,15 +98,25 @@ function createCard(cardData, cardTemplate, popupPictureView, popupConfirmDelete
 
 //обработчик submit формы редактирования профиля
 function handleSubmitEditProfile(userData) {
-  userInformation.setUserInfo(userData);
-  popupProfile.close();
+  workingApi.setNewUserInfo(userData)
+    //при успешном выполнении обновляем данные на странице
+    .then((data) => {
+      userInformation.setUserInfo(data);
+      popupProfile.close();
+    })
+    .catch(proceedError.bind(this));
 };
 
 //обработчик submit формы добавления карточки
 function handleSubmitAddCard(cardData) {
-  cardList.addItem(createCard(cardData, cardTemplate,
-    popupPictureView, popupConfirmDeleteCard));
-  popupAddCard.close();
+  workingApi.addNewCard(cardData)
+    //при успешном выполнении обновляем данные на странице
+    .then((data) => {
+      cardList.addItem(createCard(data, cardTemplate,
+        popupPictureView, popupConfirmDeleteCard));
+      popupAddCard.close();
+    })
+    .catch(proceedError.bind(this));
 }
 
 //обработчик нажатия кнопки редактирования профиля
@@ -111,16 +136,6 @@ buttonAdd.addEventListener('click', function () {
   formAddCardValidator.validateOnOpen();
   popupAddCard.open();
 });
-
-//добавляем инициализированные карточки
-const cardList = new Section({
-  items: initialCards,
-  renderer: (item) => {
-    cardList.addItem(createCard(item, cardTemplate,
-      popupPictureView, popupConfirmDeleteCard));
-  }
-}, cardsContainer);
-cardList.renderElements();
 
 //обработчик нажатия на кнопку удаления карточки
 function handleDeleteCardClick() {

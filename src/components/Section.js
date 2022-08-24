@@ -14,7 +14,7 @@ export class Section {
 
   //публичный метод для добавления DOM-элемента в контейнер
   addItem(element) {
-    this._container.prepend(element);
+    this._container.append(element);
   }
 
 }
