@@ -22,6 +22,7 @@
     "core-js": "^3.25.0",
     "css-loader": "^6.7.1",
     "cssnano": "^5.1.13",
+    "gh-pages": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "is-core-module": "^2.10.0",
     "mini-css-extract-plugin": "^2.6.1",
