@@ -6,7 +6,7 @@ export class PopupWithForm extends Popup {
     super(popupSelector);
     this._form = this._popup.querySelector('.popup__form');
     this._inputList = this._form.querySelectorAll('.popup__input');
-    this._buttonSave = this._form.querySelectorAll('.popup__button-save');
+    this._buttonSave = this._form.querySelector('.popup__button-save');
     //объект со значениями input'ов
     this._formValues = {};
     this._handleFormSubmit = handleFormSubmit;
@@ -39,8 +39,7 @@ export class PopupWithForm extends Popup {
   }
 
   //добавим метод для улучшения UX (Сохранение)
-  renderUX() {
-    console.log("saving")
+  renderLoading() {
     this._buttonSave.textContent =
       this._buttonSave.textContent === this._textUX ? this._textOnButton : this._textUX;
   }
