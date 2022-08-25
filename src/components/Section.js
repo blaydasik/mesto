@@ -2,7 +2,7 @@ export class Section {
   //на вход объект, содержащий массив добавляемых элементов и функцию-отрисовки
   //второй параметр - слектор контейнера, куда добавлять
   constructor({ items, renderer }, containerSelector) {
-    this._initialItems = items;
+    this._initialItems = items.reverse();
     this._renderer = renderer;
     this._container = document.querySelector(containerSelector);
   }
