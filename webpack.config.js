@@ -58,11 +58,5 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin()
-  ],
-  resolve: {
-    fallback: {
-      assert: require.resolve('assert'),
-      stream: require.resolve("stream-browserify")
-    },
-  }
+  ]
 }

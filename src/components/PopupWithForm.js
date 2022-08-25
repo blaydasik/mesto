@@ -23,6 +23,13 @@ export class PopupWithForm extends Popup {
     return this._formValues;
   }
 
+  //публичный метод, заполняющий input значениями
+  setInputValues(data) {
+    this._inputList.forEach((input) => {      
+      input.value = data[input.name];
+    });
+  }
+
   //добавим обработчик submit form
   setEventListeners() {
     this._form.addEventListener('submit', (evt) => {

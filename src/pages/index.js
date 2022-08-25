@@ -47,9 +47,6 @@ popupUpdateAvatar.setEventListeners();
 const formProfile = document.querySelector('.popup__form_type_profile');
 const formAddCard = document.querySelector('.popup__form_type_add-card');
 const formUpdateAvatar = document.querySelector('.popup__form_type_update-avatar');
-//находим поля форм в DOM
-const nameInput = formProfile.querySelector('.popup__input_type_name');
-const jobInput = formProfile.querySelector('.popup__input_type_about');
 
 //создадим класс информации о пользователе
 const userInformation = new UserInfo({ selectorName: '.profile__name', selectorAbout: '.profile__about', selectorAvatar: '.profile__picture' });
@@ -133,9 +130,8 @@ function handleLike(cardId, state, renderLike) {
 
 //обработчик нажатия кнопки редактирования профиля
 function handleEditProfile() {
-  const { name, about } = userInformation.getUserInfo();
-  nameInput.value = name;
-  jobInput.value = about;
+  const data = userInformation.getUserInfo();
+  popupProfile.setInputValues(data);
   formProfileValidator.validateOnOpen();
   popupProfile.open();
 }
