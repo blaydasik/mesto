@@ -38,7 +38,7 @@ const popupAddCard = new PopupWithForm('.popup_type_add-card', handleSubmitAddCa
 popupAddCard.setEventListeners();
 const popupPictureView = new PopupWithImage('.popup_type_picture-view');
 popupPictureView.setEventListeners();
-const popupConfirmDeleteCard = new PopupWithConfirmation('.popup_type_confirm_delete', handleDeleteCard);
+const popupConfirmDeleteCard = new PopupWithConfirmation('.popup_type_confirm-delete', handleDeleteCard);
 popupConfirmDeleteCard.setEventListeners();
 const popupUpdateAvatar = new PopupWithForm('.popup_type_update-avatar', handleSubmitUpdateAvatar);
 popupUpdateAvatar.setEventListeners();
